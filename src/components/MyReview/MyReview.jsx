@@ -4,7 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const MyReviews = () => {
+const MyReview = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
@@ -88,4 +88,4 @@ const MyReviews = () => {
   );
 };
 
-export default MyReviews;
+export default MyReview;

@@ -32,7 +32,7 @@ const AddReview = () => {
     };
 
     try {
-      await axios.post('http://localhost:3000/addreview', reviewData);
+      await axios.post('http://localhost:3000/products', reviewData);
       toast.success('Review added successfully!');
       setFormData({
         foodName: '',

@@ -27,7 +27,7 @@ const EditReview = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:3000/addreview/${id}`, review);
+      await axios.patch(`http://localhost:3000/products/${id}`, review);
       navigate("/my-reviews");
     } catch (err) {
       console.error(err);
