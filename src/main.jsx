@@ -8,25 +8,40 @@ import AllFood from "./components/AllFood/AllFood.jsx";
 import AuthProvider from "./contexts/AuthProvider.jsx";
 import Register from "./components/Register/Register.jsx";
 import Login from "./components/Login/Login.jsx";
-import AddReview from "./components/AddReview/AddReview.jsx"; 
-import MyReview from "./components/MyReview/MyReview.jsx"; 
+import AddReview from "./components/AddReview/AddReview.jsx";
+import MyReview from "./components/MyReview/MyReview.jsx";
 import ProductDetails from "./components/ProductsDetails/ProductDetails.jsx";
 import EditReview from "./components/EditReview/EditReview.jsx";
+import MyFavorites from "./components/MyFavorites/MyFavorites.jsx"; // ✅ import added
 import ErrorPage from "./components/ErrorPage/ErrorPage.jsx";
+import AllReviews from "./components/AllReviews/AllReviews.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayouts,
-    errorElement: <ErrorPage />, 
+    errorElement: <ErrorPage />,
     children: [
       { index: true, Component: Home },
       { path: "AllFood", Component: AllFood },
-      { path: "editreview/:id", loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`), Component: EditReview },
+      {
+        path: "editreview/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/products/${params.id}`),
+        Component: EditReview,
+      },
       { path: "register", Component: Register },
       { path: "login", Component: Login },
-      { path: "addreview", Component: AddReview }, 
+      { path: "addreview", Component: AddReview },
+      { path: "allreviews", Component: AllReviews },
       { path: "myreview", Component: MyReview },
-      { path: 'ProductDetails/:id', loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`), Component: ProductDetails },
+      { path: "myFavorites", Component: MyFavorites }, // ✅ Correct way to add route
+      {
+        path: "ProductDetails/:id",
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/products/${params.id}`),
+        Component: ProductDetails,
+      },
     ],
   },
 ]);

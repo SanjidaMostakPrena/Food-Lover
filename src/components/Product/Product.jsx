@@ -1,13 +1,49 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Product = ({ product }) => {
   const { _id, photo, foodName, restaurantName, restaurantLocation, reviewerName, rating } = product;
+  const { user } = useContext(AuthContext);
   const [isFavorite, setIsFavorite] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    // Optional: add API call here to save favorite in DB
+  const toggleFavorite = async () => {
+    if (!user?.email) {
+      toast.error("Please log in to add favorites");
+      navigate("/login");
+      return;
+    }
+
+    if (isFavorite) {
+      toast("Already added to favorites!");
+      return;
+    }
+
+    const favoriteData = {
+      userEmail: user.email,
+      foodId: _id,
+      foodName,
+      foodImage: photo,
+      restaurantName,
+      restaurantLocation,
+      rating
+    };
+
+    try {
+      const res = await axios.post("http://localhost:3000/favorites", favoriteData);
+      if (res.data.success) {
+        setIsFavorite(true);
+        toast.success("Added to favorites ❤️");
+      } else {
+        toast.error(res.data.message || "Already in favorites");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add favorite");
+    }
   };
 
   return (
@@ -16,8 +52,8 @@ const Product = ({ product }) => {
       {/* Favorite Button */}
       <button
         onClick={toggleFavorite}
-        className={`absolute top-2 right-2 text-2xl transition-colors duration-300 ${
-          isFavorite ? 'text-red-500' : 'text-red-500'
+        className={`absolute top-2 right-2 text-2xl transition-transform duration-200 hover:scale-125 ${
+          isFavorite ? 'text-red-500' : 'text-gray-400'
         }`}
       >
         ♥
@@ -28,7 +64,7 @@ const Product = ({ product }) => {
         <img
           src={photo}
           alt={foodName}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          className="w-full h-full object-cover"
         />
       </figure>
 
@@ -49,8 +85,6 @@ const Product = ({ product }) => {
           >
             Food Details
           </Link>
-
-
         </div>
       </div>
     </div>

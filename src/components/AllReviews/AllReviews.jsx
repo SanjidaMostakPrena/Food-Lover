@@ -1,100 +1,124 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../../contexts/AuthContext";
+import toast from "react-hot-toast";
 
-// const AllReviews = () => {
-//   const [reviews, setReviews] = useState([]);
-//   const [query, setQuery] = useState("");
-//   const [filteredReviews, setFilteredReviews] = useState([]);
-//   const [favorites, setFavorites] = useState([]);
+const AllReviewsWithFavorites = () => {
+  const { user } = useContext(AuthContext);
+  const [reviews, setReviews] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-//   // Load all reviews
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:3000/products/addreview")
-//       .then((res) => {
-//         setReviews(res.data);
-//         setFilteredReviews(res.data); // Initially show all
-//       })
-//       .catch((err) => console.error(err));
-//   }, []);
+  // Fetch all reviews
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/addreview")
+      .then((res) => {
+        const sorted = res.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setReviews(sorted);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
 
-//   // Search handler
-//   const handleSearch = () => {
-//     const filtered = reviews.filter((review) =>
-//       review.foodName.toLowerCase().includes(query.toLowerCase())
-//     );
-//     setFilteredReviews(filtered);
-//   };
+  // Fetch user's favorites
+  useEffect(() => {
+    if (!user?.email) return;
+    axios
+      .get(`http://localhost:3000/favorites?email=${user.email}`)
+      .then((res) => setFavorites(res.data.map((fav) => fav.foodId)))
+      .catch((err) => console.error(err));
+  }, [user]);
 
-//   // Toggle favorite
-//   const toggleFavorite = (id) => {
-//     if (favorites.includes(id)) {
-//       setFavorites(favorites.filter((favId) => favId !== id));
-//     } else {
-//       setFavorites([...favorites, id]);
-//     }
-//   };
+  const handleFavorite = async (review) => {
+    if (!user?.email) {
+      toast.error("Please log in to add favorites!");
+      return;
+    }
 
-//   return (
-//     <div className="p-4 max-w-5xl mx-auto flex flex-col gap-4">
-//       {/* Search Bar */}
-//       <div className="flex gap-2 mb-4">
-//         <input
-//           type="text"
-//           placeholder="Search food..."
-//           value={query}
-//           onChange={(e) => setQuery(e.target.value)}
-//           className="input input-bordered w-full"
-//         />
-//         <button onClick={handleSearch} className="btn btn-primary">
-//           Search
-//         </button>
-//       </div>
+    if (favorites.includes(review._id)) {
+      toast("Already in favorites ❤️");
+      return;
+    }
 
-//       {/* Reviews List */}
-//       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-//         {filteredReviews.map((review) => (
-//           <div
-//             key={review._id}
-//             className="card bg-base-100 shadow-md rounded-xl overflow-hidden relative hover:shadow-lg transition-shadow duration-300"
-//           >
-//             {/* Favorite Button */}
-//             <button
-//               onClick={() => toggleFavorite(review._id)}
-//               className={`absolute top-2 right-2 text-2xl ${
-//                 favorites.includes(review._id) ? "text-red-500" : "text-gray-400"
-//               }`}
-//             >
-//               ♥
-//             </button>
+    const favoriteData = {
+      userEmail: user.email,
+      foodId: review._id,
+      foodName: review.foodName,
+      foodImage: review.foodImage,
+      restaurantName: review.restaurantName,
+      location: review.location,
+      rating: review.rating,
+    };
 
-//             {/* Food Image */}
-//             <figure className="h-48 overflow-hidden">
-//               <img
-//                 src={review.foodImage}
-//                 alt={review.foodName}
-//                 className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-//               />
-//             </figure>
+    try {
+      const res = await axios.post("http://localhost:3000/favorites", favoriteData);
+      if (res.data.success) {
+        toast.success("Added to favorites ❤️");
+        setFavorites([...favorites, review._id]);
+      } else {
+        toast.error(res.data.message || "Failed to add favorite");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Server error while adding favorite");
+    }
+  };
 
-//             {/* Card Body */}
-//             <div className="card-body p-4">
-//               <h2 className="card-title text-lg font-semibold">{review.foodName}</h2>
-//               <p className="text-gray-600 text-sm">
-//                 {review.restaurantName} — {review.location}
-//               </p>
-//               <p className="text-sm mt-2">{review.reviewText}</p>
+  if (loading) return <p className="text-center mt-10">Loading reviews...</p>;
 
-//               <div className="flex items-center justify-between mt-4">
-//                 <span className="text-sm">{review.email}</span>
-//                 <span className="badge badge-primary text-sm">{review.rating} ★</span>
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
+  return (
+    <div className="container mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-6 text-center">All Reviews</h2>
 
-// export default AllReviews;
+      {reviews.length === 0 ? (
+        <p className="text-center text-gray-600">No reviews found.</p>
+      ) : (
+        <div className="flex flex-col gap-6">
+          {reviews.map((review, index) => (
+            <div
+              key={review._id}
+              className="flex items-start gap-4 border-l-4 border-primary pl-4 py-3 relative"
+            >
+              {/* Step Number */}
+              <div className="absolute -left-5 top-2 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                {index + 1}
+              </div>
+
+              {/* Food Image */}
+              <img
+                src={review.foodImage}
+                alt={review.foodName}
+                className="w-24 h-24 object-cover rounded-lg"
+              />
+
+              {/* Review Info */}
+              <div className="flex-1 relative">
+                <h3 className="text-lg font-semibold">{review.foodName}</h3>
+                <p className="text-gray-600">{review.restaurantName} — {review.location}</p>
+                <p className="text-gray-500 text-sm">
+                  Posted on {new Date(review.createdAt).toLocaleDateString()}
+                </p>
+                <span className="badge badge-primary mt-1">{review.rating} ★</span>
+
+                {/* Favorite Button */}
+                <button
+                  onClick={() => handleFavorite(review)}
+                  className={`absolute top-0 right-0 text-2xl transition-transform duration-200 hover:scale-125 ${
+                    favorites.includes(review._id) ? "text-red-500" : "text-gray-400"
+                  }`}
+                >
+                  ♥
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AllReviewsWithFavorites;

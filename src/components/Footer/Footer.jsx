@@ -16,7 +16,7 @@ const Footer = () => {
             className="w-50 h-24 rounded-full object-cover"
           />
           </div>
-          <p className="text-sm">
+          <p className="text-sm w-50 text-center justify-center">
             Discover, share, and enjoy local food experiences with food lovers near you!
           </p>
         </div>
@@ -31,18 +31,18 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="/reviews" className="hover:text-yellow-400 transition">
-                Reviews
+              <Link to="/AllFood" className="hover:text-yellow-400 transition">
+                AllFood
               </Link>
             </li>
             <li>
-              <Link to="/about" className="hover:text-yellow-400 transition">
-                About
+              <Link to="/AllReviews" className="hover:text-yellow-400 transition">
+                AllReviews
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:text-yellow-400 transition">
-                Contact
+              <Link to="/Myfavorites" className="hover:text-yellow-400 transition">
+                MyFavorites
               </Link>
             </li>
           </ul>
@@ -58,9 +58,7 @@ const Footer = () => {
             <a href="#" className="hover:text-yellow-400 transition">
               <FaInstagram size={22} />
             </a>
-            <a href="#" className="hover:text-yellow-400 transition">
-              <FaTwitter size={22} />
-            </a>
+           
             <a href="#" className="hover:text-yellow-400 transition">
               <FaYoutube size={22} />
             </a>

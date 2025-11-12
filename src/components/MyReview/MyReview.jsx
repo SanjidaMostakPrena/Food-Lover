@@ -66,12 +66,13 @@ const MyReview = () => {
                   {new Date(review.createdAt).toLocaleDateString()}
                 </td>
                 <td className="p-2 border space-x-2">
-                  <button
-                    onClick={() => handleEdit(review._id)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                  >
-                    Edit
-                  </button>
+                <button
+  onClick={() => handleEdit(review._id)}
+  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+>
+  Edit
+</button>
+
                   <button
                     onClick={() => handleDelete(review._id)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"

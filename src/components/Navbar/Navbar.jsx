@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { motion } from "framer-motion";
+
 const Navbar = () => {
   const { user, signOutUser } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +17,16 @@ const Navbar = () => {
           }
         >
           Home
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/allReviews"
+          className={({ isActive }) =>
+            isActive ? "text-primary font-semibold" : "hover:text-primary"
+          }
+        >
+          All Reviews
         </NavLink>
       </li>
       <li>
@@ -50,6 +61,16 @@ const Navbar = () => {
               My Reviews
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/myFavorites"
+              className={({ isActive }) =>
+                isActive ? "text-primary font-semibold" : "hover:text-primary"
+              }
+            >
+              My Favorites
+            </NavLink>
+          </li>
         </>
       )}
     </>
@@ -57,6 +78,7 @@ const Navbar = () => {
 
   return (
     <div className="navbar bg-white shadow-md sticky top-0 z-50 px-4 lg:px-16">
+      {/* Navbar Start */}
       <div className="navbar-start">
         <div className="dropdown lg:hidden">
           <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -83,10 +105,9 @@ const Navbar = () => {
           </ul>
         </div>
 
-
+        {/* Logo */}
         <NavLink to="/" className="flex items-center">
-        
-           <motion.img
+          <motion.img
             initial={{ opacity: 0, scale: 0.7 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -97,12 +118,12 @@ const Navbar = () => {
         </NavLink>
       </div>
 
-     
+      {/* Navbar Center */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 gap-4">{links}</ul>
       </div>
 
-
+      {/* Navbar End */}
       <div className="navbar-end flex items-center gap-2">
         {user ? (
           <div className="relative">
@@ -117,9 +138,17 @@ const Navbar = () => {
               />
             </div>
 
-   
             {isOpen && (
               <ul className="absolute right-0 mt-3 w-44 bg-white rounded-lg shadow-lg border border-gray-200">
+                <li>
+                  <NavLink
+                    to="/allReviews"
+                    className="block px-4 py-2 text-sm hover:bg-primary"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    All Reviews
+                  </NavLink>
+                </li>
                 <li>
                   <NavLink
                     to="/addReview"
@@ -136,6 +165,15 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     My Reviews
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/myFavorites"
+                    className="block px-4 py-2 text-sm hover:bg-primary"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    My Favorites
                   </NavLink>
                 </li>
                 <li>
