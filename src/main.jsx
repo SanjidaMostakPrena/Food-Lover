@@ -20,22 +20,12 @@ const router = createBrowserRouter([
     children: [
       { index: true, Component: Home },
       { path: "AllFood", Component: AllFood },
-      {
-  path: "editreview/:id",
-  loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`),
-  Component: EditReview
-},
-
+      { path: "editreview/:id", loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`), Component: EditReview },
       { path: "register", Component: Register },
       { path: "login", Component: Login },
       { path: "addreview", Component: AddReview }, 
-      { path: "myreview", Component: MyReview},
-      
-      {
-        path:'ProductDetails/:id',
-        loader:({params}) => fetch(`http://localhost:3000/products/${params.id}`),
-        Component:ProductDetails
-      } 
+      { path: "myreview", Component: MyReview },
+      { path: 'ProductDetails/:id', loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`), Component: ProductDetails },
     ],
   },
 ]);

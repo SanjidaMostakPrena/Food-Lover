@@ -123,7 +123,7 @@ const Navbar = () => {
                 <li>
                   <NavLink
                     to="/addReview"
-                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm hover:bg-primary"
                     onClick={() => setIsOpen(false)}
                   >
                     Add Review
@@ -132,7 +132,7 @@ const Navbar = () => {
                 <li>
                   <NavLink
                     to="/myReview"
-                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm hover:bg-primary"
                     onClick={() => setIsOpen(false)}
                   >
                     My Reviews
@@ -144,7 +144,7 @@ const Navbar = () => {
                       signOutUser();
                       setIsOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                    className="block w-full text-left px-4 py-2 text-sm hover:bg-primary"
                   >
                     Logout
                   </button>

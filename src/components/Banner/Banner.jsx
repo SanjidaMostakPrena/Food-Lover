@@ -39,7 +39,7 @@ const Banner = () => {
   ];
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <Slider {...settings}>
         {slides.map((slide, index) => (
           <div key={index} className="relative">
