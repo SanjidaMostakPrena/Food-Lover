@@ -12,7 +12,7 @@ const AllFood = () => {
     axios.get("http://localhost:3000/products")
       .then(res => {
         setReviews(res.data);
-        setFilteredReviews(res.data); // initially show all
+        setFilteredReviews(res.data); 
       })
       .catch(err => console.error(err));
   }, []);

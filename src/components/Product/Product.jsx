@@ -42,7 +42,7 @@ const Product = ({ product }) => {
           <span className="badge badge-primary text-sm sm:text-base">{rating} ★</span>
         </div>
 
-        <div className="card-actions justify-start mt-4">
+        <div className="card-actions justify-center mt-4 text-center">
           <Link
             to={`/ProductDetails/${_id}`}
             className="btn btn-sm btn-outline btn-primary w-1/2 sm:w-5/12"

@@ -3,6 +3,7 @@ import { useLoaderData } from 'react-router';
 
 const ProductDetails = () => {
   const product = useLoaderData();
+  console.log(product)
 
   const popularRestaurants = [
     { name: "The Spice Hub", location: "Dhaka" },

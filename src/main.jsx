@@ -12,11 +12,12 @@ import AddReview from "./components/AddReview/AddReview.jsx";
 import MyReview from "./components/MyReview/MyReview.jsx"; 
 import ProductDetails from "./components/ProductsDetails/ProductDetails.jsx";
 import EditReview from "./components/EditReview/EditReview.jsx";
-
+import ErrorPage from "./components/ErrorPage/ErrorPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayouts,
+    errorElement: <ErrorPage />, 
     children: [
       { index: true, Component: Home },
       { path: "AllFood", Component: AllFood },

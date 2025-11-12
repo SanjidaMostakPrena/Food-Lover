@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -7,91 +7,103 @@ const EditReview = () => {
   const navigate = useNavigate();
   const [review, setReview] = useState({
     foodName: "",
+    foodImage: "",
     restaurantName: "",
-    comment: "",
-    rating: 0,
-    photo: "",
+    location: "",
+    rating: 1,
+    reviewText: "",
   });
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/addreview/${id}`)
-      .then((res) => setReview(res.data))
-      .catch((err) => console.error(err));
+    axios.get(`http://localhost:3000/products/${id}`)
+      .then(res => setReview(res.data))
+      .catch(err => console.error(err));
   }, [id]);
 
-  const handleChange = (e) => {
-    setReview({ ...review, [e.target.name]: e.target.value });
+ 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios.put(`http://localhost:3000/addreview/${id}`, review)
+      .then(res => {
+        if (res.data.success) {
+          alert("✅ Review updated successfully!");
+          navigate("/myReview"); 
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("❌ Failed to update review");
+      });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.patch(`http://localhost:3000/products/${id}`, review);
-      navigate("/my-reviews");
-    } catch (err) {
-      console.error(err);
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setReview(prev => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Edit Review</h1>
+    <div className="max-w-2xl mx-auto mt-10 p-6 border rounded-2xl shadow">
+      <h2 className="text-2xl font-bold mb-6 text-center">Edit Review</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1">Food Name</label>
-          <input
-            type="text"
-            name="foodName"
-            value={review.foodName}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Restaurant Name</label>
-          <input
-            type="text"
-            name="restaurantName"
-            value={review.restaurantName}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Comment</label>
-          <textarea
-            name="comment"
-            value={review.comment}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          ></textarea>
-        </div>
-        <div>
-          <label className="block mb-1">Rating</label>
-          <input
-            type="number"
-            name="rating"
-            value={review.rating}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-            min={0}
-            max={5}
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Food Image URL</label>
-          <input
-            type="text"
-            name="photo"
-            value={review.photo}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
+        <input
+          type="text"
+          name="foodName"
+          value={review.foodName}
+          onChange={handleChange}
+          placeholder="Food Name"
+          required
+          className="w-full border p-2 rounded"
+        />
+        <input
+          type="text"
+          name="foodImage"
+          value={review.foodImage}
+          onChange={handleChange}
+          placeholder="Food Image URL"
+          required
+          className="w-full border p-2 rounded"
+        />
+        <input
+          type="text"
+          name="restaurantName"
+          value={review.restaurantName}
+          onChange={handleChange}
+          placeholder="Restaurant Name"
+          required
+          className="w-full border p-2 rounded"
+        />
+        <input
+          type="text"
+          name="location"
+          value={review.location}
+          onChange={handleChange}
+          placeholder="Location"
+          required
+          className="w-full border p-2 rounded"
+        />
+        <input
+          type="number"
+          name="rating"
+          value={review.rating}
+          onChange={handleChange}
+          min="1"
+          max="5"
+          placeholder="Star Rating (1–5)"
+          required
+          className="w-full border p-2 rounded"
+        />
+        <textarea
+          name="reviewText"
+          value={review.reviewText}
+          onChange={handleChange}
+          placeholder="Write your review..."
+          required
+          className="w-full border p-2 rounded"
+        />
         <button
           type="submit"
-          className="px-4 py-2 bg-green-500 text-white rounded"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
           Update Review
         </button>
