@@ -1,43 +1,35 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
-import toast from 'react-hot-toast';
 
 const Login = () => {
-  useEffect(() => {
+   useEffect(() => {
     document.title = "Login";
   }, []);
 
   const { signInUser, signInWithGoogle } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/'; // redirect after login
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
 
   const handleLogin = (e) => {
     e.preventDefault();
     signInUser(email, password)
       .then(result => {
-        toast.success('✅ Logged in successfully!');
-        navigate(from, { replace: true });
+        console.log('User logged in:', result.user);
       })
       .catch(error => {
         console.error('Login error:', error.message);
-        toast.error(`❌ Login failed: ${error.message}`);
       });
   };
 
+ 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
       .then(result => {
-        toast.success('✅ Logged in with Google!');
-        navigate(from, { replace: true });
+        console.log('Google sign in:', result.user);
       })
       .catch(error => {
         console.error(error);
-        toast.error(`❌ Google sign-in failed: ${error.message}`);
       });
   };
 

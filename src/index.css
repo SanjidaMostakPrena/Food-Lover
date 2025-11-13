@@ -2,8 +2,7 @@
 @plugin "daisyui";
 @plugin "daisyui/theme" {
   name: "white";
-  
   default: true;
- 
   --color-primary: teal;
+  --color-secondary: blue;
 }
