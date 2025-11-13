@@ -4,13 +4,11 @@ import { Link } from "react-router-dom";
 
 const AllFood = () => {
   const [reviews, setReviews] = useState([]);
-  const [query, setQuery] = useState("");
-  const [filteredReviews, setFilteredReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    document.title = "AllFood";
+    document.title = "All Food";
   }, []);
 
   useEffect(() => {
@@ -22,18 +20,10 @@ const AllFood = () => {
             b.rating - a.rating || new Date(b.createdAt) - new Date(a.createdAt)
         );
         setReviews(sorted);
-        setFilteredReviews(sorted);
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
-
-  const handleSearch = () => {
-    const filtered = reviews.filter((review) =>
-      review.foodName.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredReviews(filtered);
-  };
 
   const toggleFavorite = (id) => {
     setFavorites((prev) =>
@@ -41,27 +31,23 @@ const AllFood = () => {
     );
   };
 
-  if (loading) return <p className="text-center mt-10">Loading reviews...</p>;
+  if (loading)
+    return <p className="text-center mt-10 text-lg font-medium">Loading food...</p>;
 
   return (
     <div className="max-w-6xl mx-auto p-4">
-      {/* Search */}
-      <div className="flex mb-6 justify-center">
-        <input
-          type="text"
-          placeholder="Search food..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="input input-bordered w-2/3 sm:w-1/3 mr-2"
-        />
-        <button onClick={handleSearch} className="btn btn-primary">
-          Search
-        </button>
+      {/* Header with Image and Note */}
+      <div className="text-center mb-8">
+      
+        <h1 className="text-4xl font-bold mb-2">Welcome Food Lovers!</h1>
+        <p className="text-gray-700 text-lg">
+          Discover delicious dishes from your favorite local restaurants and enjoy the best culinary experiences.
+        </p>
       </div>
 
       {/* Food Cards */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {filteredReviews.map((review) => {
+        {reviews.map((review) => {
           const {
             _id,
             foodName,
@@ -79,7 +65,6 @@ const AllFood = () => {
               key={_id}
               className="card bg-base-100 shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow relative"
             >
-              {/* Favorite Button */}
               <button
                 onClick={() => toggleFavorite(_id)}
                 className={`absolute top-2 right-2 text-2xl transition-transform duration-200 hover:scale-125 ${

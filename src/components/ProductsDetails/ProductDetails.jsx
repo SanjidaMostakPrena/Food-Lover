@@ -12,9 +12,9 @@ const ProductDetails = () => {
   ];
 
   const relatedDishes = [
-    { name: "Chicken Curry", photo: "https://i.ibb.co.com/602S8BLN/i.jpg" },
-    { name: "Fried Rice", photo: "https://i.ibb.co.com/N6LKc5yW/delicious-lobster-gourmet-seafood.jpg" },
-    { name: "Beef Steak", photo: "https://i.ibb.co.com/RpNcmM0Z/tortilla-wrap-with-falafel-fresh-salad-vegan-tacos-vegetarian-healthy-food.jpg" },
+    { name: "Chowmein", photo: "https://i.ibb.co.com/602S8BLN/i.jpg" },
+    { name: "Lobster Carry", photo: "https://i.ibb.co.com/N6LKc5yW/delicious-lobster-gourmet-seafood.jpg" },
+    { name: "Beef Ball", photo: "https://i.ibb.co.com/RpNcmM0Z/tortilla-wrap-with-falafel-fresh-salad-vegan-tacos-vegetarian-healthy-food.jpg" },
   ];
 
   return (
@@ -44,14 +44,7 @@ const ProductDetails = () => {
                 <span className="font-semibold">Reviewed by:</span> {product.reviewerName}
               </p>
             </div>
-            <div className="flex gap-4 mt-4">
-              <button className="bg-primary text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:bg-yellow-600 transition-colors">
-                Order Now
-              </button>
-              <button className="border border-gray-300 text-gray-800 font-semibold px-6 py-2 rounded-xl hover:bg-gray-100 transition-colors">
-                Add to Favorites
-              </button>
-            </div>
+          
           </div>
         </div>
       </div>

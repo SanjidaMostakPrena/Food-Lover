@@ -1,156 +1,15 @@
-// import React, { useState, useContext } from 'react';
-// import axios from 'axios';
-// import { AuthContext } from '../../contexts/AuthContext';
-// import { toast } from 'react-hot-toast';
-// import { useLoaderData } from 'react-router';
-
-// const AddReview = () => {
-//   const { user } = useContext(AuthContext); 
-//   const [formData, setFormData] = useState({
-//     foodName: '',
-//     foodImage: '',
-//     restaurantName: '',
-//     location: '',
-//     rating: 0,
-//     reviewText: ''
-//   });
-
-//   const handleChange = (e) => {
-//     setFormData({...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!user?.email) {
-//       toast.error('You must be logged in to add a review');
-//       return;
-//     }
-
-//     const reviewData = {
-//       ...formData,
-//       email: user.email,
-//       createdAt: new Date()
-//     };
-
-//     try {
-//       await axios.post('http://localhost:3000/products', reviewData);
-//       toast.success('Review added successfully!');
-//       setFormData({
-//         foodName: '',
-//         foodImage: '',
-//         restaurantName: '',
-//         location: '',
-//         rating: 0,
-//         reviewText: ''
-//       });
-//     } catch (error) {
-//       console.error(error);
-//       toast.error('Failed to add review');
-//     }
-//   };
-
-
-
-//   return (
-//     <div className="max-w-3xl mx-auto py-10">
-//       <h1 className="text-3xl font-bold mb-6">Add a New Review</h1>
-//       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 py-6">
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Food Name</label>
-//           <input
-//             type="text"
-//             name="foodName"
-//             value={formData.foodName}
-//             onChange={handleChange}
-//             className="w-full border rounded px-3 py-2"
-//             required
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Food Image URL</label>
-//           <input
-//             type="text"
-//             name="foodImage"
-//             value={formData.foodImage}
-//             onChange={handleChange}
-//             className="w-full border rounded px-3 py-2"
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Restaurant Name</label>
-//           <input
-//             type="text"
-//             name="restaurantName"
-//             value={formData.restaurantName}
-//             onChange={handleChange}
-//             className="w-full border rounded px-3 py-2"
-//             required
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Location</label>
-//           <input
-//             type="text"
-//             name="location"
-//             value={formData.location}
-//             onChange={handleChange}
-//             className="w-full border rounded px-3 py-2"
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Rating (1-5)</label>
-//           <input
-//             type="number"
-//             name="rating"
-//             value={formData.rating}
-//             onChange={handleChange}
-//             min="1"
-//             max="5"
-//             className="w-full border rounded px-3 py-2"
-//           />
-//         </div>
-
-//         <div className="mb-4">
-//           <label className="block text-gray-700">Review Text</label>
-//           <textarea
-//             name="reviewText"
-//             value={formData.reviewText}
-//             onChange={handleChange}
-//             rows="4"
-//             className="w-full border rounded px-3 py-2"
-//             required
-//           ></textarea>
-//         </div>
-
-//         <button
-//           type="submit"
-//           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
-//         >
-//           Add Review
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default AddReview;
-
-
-
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from '../../contexts/AuthContext';
 
 const AddReview = () => {
-     useEffect(() => {
-    document.title = "AddReview";
+  useEffect(() => {
+    document.title = "Add Review";
   }, []);
 
   const { user } = useContext(AuthContext);
-  
+
+  // Default food image preview
+  const [foodImagePreview, setFoodImagePreview] = useState("https://images.unsplash.com/photo-1627308595229-7830a5c91f9f");
 
   const handleAddReviewSubmit = (e) => {
     e.preventDefault();
@@ -171,6 +30,7 @@ const AddReview = () => {
       rating,
       reviewText,
       email: user?.email,
+      userName: user?.displayName || "Anonymous",
       createdAt: new Date().toISOString(),
     };
 
@@ -186,16 +46,45 @@ const AddReview = () => {
         console.log("✅ Review added:", data);
         alert("Your review has been added successfully!");
         form.reset();
+        setFoodImagePreview("https://images.unsplash.com/photo-1627308595229-7830a5c91f9f");
       })
       .catch((err) => console.error("❌ Error adding review:", err));
   };
-  
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 border rounded-2xl shadow">
-      <h2 className="text-2xl font-bold mb-6 text-center">Add a Review</h2>
+    <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-3xl shadow-lg">
+      {/* Header */}
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-800">Add Your Food Review</h1>
+        <p className="text-gray-500 mt-2">Share your thoughts and experiences about your favorite dishes!</p>
+      </div>
 
+      {/* Food Image Preview */}
+      <div className="flex justify-center mb-6">
+        <img
+          src={foodImagePreview}
+          alt="Food Preview"
+          className="w-full max-w-sm h-64 object-cover rounded-xl shadow-md"
+        />
+      </div>
+
+      {/* Form */}
       <form onSubmit={handleAddReviewSubmit} className="space-y-4">
+        {/* User Info (read-only) */}
+        <input
+          type="text"
+          value={user?.displayName || "Anonymous"}
+          readOnly
+          className="w-full border p-2 rounded bg-gray-100 text-gray-700"
+        />
+        <input
+          type="email"
+          value={user?.email || ""}
+          readOnly
+          className="w-full border p-2 rounded bg-gray-100 text-gray-700"
+        />
+
+        {/* Food Name */}
         <input
           type="text"
           name="foodName"
@@ -203,13 +92,17 @@ const AddReview = () => {
           required
           className="w-full border p-2 rounded"
         />
+
+        {/* Food Image URL */}
         <input
           type="text"
           name="foodImage"
           placeholder="Food Image URL"
           required
           className="w-full border p-2 rounded"
+          onChange={(e) => setFoodImagePreview(e.target.value)}
         />
+
         <input
           type="text"
           name="restaurantName"
@@ -242,7 +135,7 @@ const AddReview = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-primary text-white py-2 rounded hover:bg-white transition-colors"
         >
           Submit Review
         </button>

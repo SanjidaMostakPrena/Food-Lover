@@ -42,7 +42,7 @@ const MyReview = () => {
     return <p className="text-center mt-10 text-gray-600">Loading reviews...</p>;
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6">
       <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
         My Reviews
       </h2>
@@ -52,59 +52,66 @@ const MyReview = () => {
           You have not posted any reviews yet.
         </p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-6">
           {reviews.map((review) => (
             <li
               key={review._id}
-              className="flex flex-col sm:flex-row items-start sm:items-center bg-white border rounded-lg shadow-sm p-4 hover:shadow-md transition"
+              className="bg-white border rounded-lg shadow p-6 hover:shadow-lg transition"
             >
               {/* Food Image */}
-              <img
-                src={review.foodImage}
-                alt={review.foodName}
-                className="w-full sm:w-32 h-24 object-cover rounded-lg mr-4 mb-2 sm:mb-0"
-              />
+              <div className="w-full h-60 mb-4">
+                <img
+                  src={review.foodImage}
+                  alt={review.foodName}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
 
               {/* Review Details */}
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-gray-800">
-                  {review.foodName}
-                </h3>
-                <p className="text-gray-600">{review.restaurantName}</p>
-                <p className="text-gray-500 text-sm">{review.location}</p>
-
-                {/* Star Rating */}
-                <div className="flex items-center mt-1">
+              <div className="space-y-1 text-gray-700">
+                <p>
+                  <span className="font-semibold">Food Name:</span> {review.foodName}
+                </p>
+                <p>
+                  <span className="font-semibold">Restaurant:</span> {review.restaurantName}
+                </p>
+                <p>
+                  <span className="font-semibold">Location:</span> {review.location}
+                </p>
+                <p>
+                  <span className="font-semibold">Posted Date:</span>{" "}
+                  {new Date(review.createdAt).toLocaleDateString()}
+                </p>
+                <p className="flex items-center">
+                  <span className="font-semibold mr-2">Rating:</span>
                   {Array.from({ length: 5 }, (_, i) => (
                     <span
                       key={i}
-                      className={`text-yellow-500 text-lg ${
-                        i < review.rating ? "filled" : "text-gray-300"
+                      className={`text-lg ${
+                        i < review.rating ? "text-yellow-500" : "text-gray-300"
                       }`}
                     >
                       ★
                     </span>
                   ))}
-                  <span className="text-gray-600 ml-2 text-sm">
-                    {review.rating} / 5
-                  </span>
-                </div>
-
-                {/* Review Text */}
-                <p className="text-gray-700 text-sm mt-1">{review.reviewText}</p>
+                  <span className="ml-2 text-gray-600 text-sm">{review.rating} / 5</span>
+                </p>
+                <p>
+                  <span className="font-semibold">Review:</span> {review.reviewText}
+                </p>
               </div>
 
-              {/* button */}
-              <div className="flex flex-col sm:ml-4 mt-2 sm:mt-0 space-y-2">
+              {/* Buttons */}
+              <div className="flex space-x-4 mt-4">
                 <button
                   onClick={() => handleEdit(review._id)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                  className="flex-1 px-4 py-2 bg-primary text-white rounded"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(review._id)}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                  className="flex-1 px-4 py-2 bg-primary text-white rounded"
                 >
                   Delete
                 </button>

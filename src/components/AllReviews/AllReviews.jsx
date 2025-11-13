@@ -1,33 +1,49 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const AllReviewsWithFavorites = () => {
-     useEffect(() => {
-    document.title = "AllRevies";
-  }, []);
-
+const AllReviews = () => {
   const { user } = useContext(AuthContext);
   const [reviews, setReviews] = useState([]);
+  const [filteredReviews, setFilteredReviews] = useState([]);
+  const [query, setQuery] = useState("");
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all reviews
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/addreview")
-      .then((res) => {
-        const sorted = res.data.sort(
+    document.title = "All Reviews";
+  }, []);
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        const [productsRes, reviewsRes] = await Promise.all([
+          axios.get("http://localhost:3000/products"),
+          axios.get("http://localhost:3000/addreview")
+        ]);
+
+        const combined = [...productsRes.data, ...reviewsRes.data];
+
+  
+        const sorted = combined.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
+
         setReviews(sorted);
-      })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+        setFilteredReviews(sorted);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  // Fetch user's favorites
+  
   useEffect(() => {
     if (!user?.email) return;
     axios
@@ -36,32 +52,32 @@ const AllReviewsWithFavorites = () => {
       .catch((err) => console.error(err));
   }, [user]);
 
-  const handleFavorite = async (review) => {
+  const handleFavorite = async (item) => {
     if (!user?.email) {
       toast.error("Please log in to add favorites!");
       return;
     }
 
-    if (favorites.includes(review._id)) {
+    if (favorites.includes(item._id)) {
       toast("Already in favorites ❤️");
       return;
     }
 
     const favoriteData = {
       userEmail: user.email,
-      foodId: review._id,
-      foodName: review.foodName,
-      foodImage: review.foodImage,
-      restaurantName: review.restaurantName,
-      location: review.location,
-      rating: review.rating,
+      foodId: item._id,
+      foodName: item.foodName,
+      foodImage: item.foodImage || item.photo,
+      restaurantName: item.restaurantName,
+      location: item.location || item.restaurantLocation,
+      rating: item.rating,
     };
 
     try {
       const res = await axios.post("http://localhost:3000/favorites", favoriteData);
       if (res.data.success) {
         toast.success("Added to favorites ❤️");
-        setFavorites([...favorites, review._id]);
+        setFavorites([...favorites, item._id]);
       } else {
         toast.error(res.data.message || "Failed to add favorite");
       }
@@ -71,58 +87,106 @@ const AllReviewsWithFavorites = () => {
     }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading reviews...</p>;
+  const handleSearch = () => {
+    const filtered = reviews.filter((item) =>
+      item.foodName.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredReviews(filtered);
+  };
+
+  if (loading)
+    return <p className="text-center mt-10 text-lg font-medium">Loading reviews...</p>;
 
   return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6 text-center">All Reviews</h2>
+    <div className="max-w-6xl mx-auto p-4">
+      <h2 className="text-3xl font-bold mb-6 text-center">All Reviews & Products</h2>
 
-      {reviews.length === 0 ? (
-        <p className="text-center text-gray-600">No reviews found.</p>
+    
+      <div className="flex mb-6 justify-center">
+        <input
+          type="text"
+          placeholder="Search food..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="input input-bordered w-2/3 sm:w-1/3 mr-2"
+        />
+        <button onClick={handleSearch} className="btn btn-primary">
+          Search
+        </button>
+      </div>
+
+      
+      {filteredReviews.length === 0 ? (
+        <p className="text-center text-gray-600">No items found.</p>
       ) : (
-        <div className="flex flex-col gap-6">
-          {reviews.map((review, index) => (
-            <div
-              key={review._id}
-              className="flex items-start gap-4 border-l-4 border-primary pl-4 py-3 relative"
-            >
-              {/* Step Number */}
-              <div className="absolute -left-5 top-2 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">
-                {index + 1}
-              </div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {filteredReviews.map((item) => {
+            const {
+              _id,
+              foodName,
+              restaurantName,
+              location,
+              restaurantLocation,
+              rating,
+              foodImage,
+              photo,
+            } = item;
 
-              {/* Food Image */}
-              <img
-                src={review.foodImage}
-                alt={review.foodName}
-                className="w-24 h-24 object-cover rounded-lg"
-              />
+            const isFavorite = favorites.includes(_id);
 
-              {/* Review Info */}
-              <div className="flex-1 relative">
-                <h3 className="text-lg font-semibold">{review.foodName}</h3>
-                <p className="text-gray-600">{review.restaurantName} — {review.location}</p>
-                <p className="text-gray-500 text-sm">
-                  Posted on {new Date(review.createdAt).toLocaleDateString()}
-                </p>
-                <span className="badge badge-primary mt-1">{review.rating} ★</span>
-
-                {/* Favorite Button */}
+            return (
+              <div
+                key={_id}
+                className="card bg-base-100 shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow relative"
+              >
+              
                 <button
-                  onClick={() => handleFavorite(review)}
-                  className={`absolute top-0 right-0 text-2xl transition-transform duration-200 hover:scale-125 ${
-                    favorites.includes(review._id) ? "text-red-500" : "text-gray-400"
+                  onClick={() => handleFavorite(item)}
+                  className={`absolute top-2 right-2 text-2xl transition-transform duration-200 hover:scale-125 ${
+                    isFavorite ? "text-red-500" : "text-gray-400"
                   }`}
                 >
                   ♥
                 </button>
+
+                <figure className="h-48 sm:h-56 md:h-64 overflow-hidden">
+                  <img
+                    src={foodImage || photo}
+                    alt={foodName}
+                    className="w-full h-full object-cover"
+                  />
+                </figure>
+
+                <div className="card-body p-4">
+                  <h2 className="card-title text-lg sm:text-xl font-semibold">
+                    {foodName}
+                  </h2>
+                  <p className="text-gray-600 text-sm sm:text-base">
+                    {restaurantName} — {location || restaurantLocation}
+                  </p>
+
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="badge badge-primary text-sm sm:text-base">
+                      {rating} ★
+                    </span>
+                  </div>
+
+                  <div className="card-actions justify-center mt-4">
+                    <Link
+                      to={`/ProductDetails/${_id}`}
+                      className="btn btn-sm btn-outline btn-primary w-1/2 sm:w-5/12"
+                    >
+                      Details
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
   );
 };
 
-export default AllReviewsWithFavorites;
+export default AllReviews;

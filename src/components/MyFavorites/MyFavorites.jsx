@@ -81,6 +81,7 @@ const MyFavorites = () => {
                 <p className="text-gray-500 text-xs">
                   {fav.restaurantLocation}
                 </p>
+                
                 <span className="badge badge-primary mt-2">
                   {fav.rating} ★
                 </span>

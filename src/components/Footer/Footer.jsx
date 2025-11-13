@@ -20,8 +20,6 @@ const Footer = () => {
             Discover, share, and enjoy local food experiences with food lovers near you!
           </p>
         </div>
-
-        {/* Navigation Links */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-3">Quick Links</h3>
           <ul className="space-y-2">
@@ -47,8 +45,6 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-
-        {/* Social Media */}
         <div>
           <h3 className="text-lg font-semibold text-white mb-3">Follow Us</h3>
           <div className="flex justify-center md:justify-start gap-4">

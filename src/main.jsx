@@ -35,7 +35,7 @@ const router = createBrowserRouter([
       { path: "addreview", Component: AddReview },
       { path: "allreviews", Component: AllReviews },
       { path: "myreview", Component: MyReview },
-      { path: "myFavorites", Component: MyFavorites }, // ✅ Correct way to add route
+      { path: "myFavorites", Component: MyFavorites }, 
       {
         path: "ProductDetails/:id",
         loader: ({ params }) =>
