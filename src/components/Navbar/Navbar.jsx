@@ -19,7 +19,20 @@ const Navbar = () => {
           Home
         </NavLink>
       </li>
+      
       <li>
+        <NavLink
+          to="/AllReviews"
+          className={({ isActive }) =>
+            isActive ? "text-primary font-semibold" : "hover:text-primary"
+          }
+        >
+          AllReviews
+        </NavLink>
+      </li>
+      {user && (
+        <>
+        <li>
         <NavLink
           to="/allFood"
           className={({ isActive }) =>
@@ -29,26 +42,14 @@ const Navbar = () => {
           All Food
         </NavLink>
       </li>
-      <li>
-        <NavLink
-          to="/AddReview"
-          className={({ isActive }) =>
-            isActive ? "text-primary font-semibold" : "hover:text-primary"
-          }
-        >
-          AddReview
-        </NavLink>
-      </li>
-      {user && (
-        <>
           <li>
             <NavLink
-              to="/AllReviews"
+              to="/AddReview"
               className={({ isActive }) =>
                 isActive ? "text-primary font-semibold" : "hover:text-primary"
               }
             >
-              All Reviews
+              Add Review
             </NavLink>
           </li>
           <li>

@@ -15,18 +15,19 @@ const AllReviews = () => {
   useEffect(() => {
     document.title = "All Reviews";
   }, []);
+
+  // Fetch products + reviews
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
       try {
         const [productsRes, reviewsRes] = await Promise.all([
           axios.get("http://localhost:3000/products"),
-          axios.get("http://localhost:3000/addreview")
+          axios.get("http://localhost:3000/addreview"),
         ]);
 
         const combined = [...productsRes.data, ...reviewsRes.data];
 
-  
         const sorted = combined.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
@@ -43,7 +44,7 @@ const AllReviews = () => {
     fetchData();
   }, []);
 
-  
+  // Fetch favorites
   useEffect(() => {
     if (!user?.email) return;
     axios
@@ -52,6 +53,7 @@ const AllReviews = () => {
       .catch((err) => console.error(err));
   }, [user]);
 
+  // Add to favorites
   const handleFavorite = async (item) => {
     if (!user?.email) {
       toast.error("Please log in to add favorites!");
@@ -87,6 +89,7 @@ const AllReviews = () => {
     }
   };
 
+  // Search handler
   const handleSearch = () => {
     const filtered = reviews.filter((item) =>
       item.foodName.toLowerCase().includes(query.toLowerCase())
@@ -99,9 +102,14 @@ const AllReviews = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">All Reviews & Products</h2>
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold mb-2">All Reviews & Products</h1>
+        <p className="text-gray-700 text-lg">
+          Explore the latest reviews and discover top-rated dishes from your favorite restaurants.
+        </p>
+      </div>
 
-    
+      {/* Search */}
       <div className="flex mb-6 justify-center">
         <input
           type="text"
@@ -115,7 +123,7 @@ const AllReviews = () => {
         </button>
       </div>
 
-      
+      {/* Food Cards */}
       {filteredReviews.length === 0 ? (
         <p className="text-center text-gray-600">No items found.</p>
       ) : (
@@ -127,6 +135,7 @@ const AllReviews = () => {
               restaurantName,
               location,
               restaurantLocation,
+              reviewerName,
               rating,
               foodImage,
               photo,
@@ -139,7 +148,6 @@ const AllReviews = () => {
                 key={_id}
                 className="card bg-base-100 shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow relative"
               >
-              
                 <button
                   onClick={() => handleFavorite(item)}
                   className={`absolute top-2 right-2 text-2xl transition-transform duration-200 hover:scale-125 ${
@@ -165,13 +173,18 @@ const AllReviews = () => {
                     {restaurantName} — {location || restaurantLocation}
                   </p>
 
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="badge badge-primary text-sm sm:text-base">
-                      {rating} ★
-                    </span>
-                  </div>
+                  {reviewerName && (
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="font-medium text-sm sm:text-base">
+                        {reviewerName}
+                      </span>
+                      <span className="badge badge-primary text-sm sm:text-base">
+                        {rating} ★
+                      </span>
+                    </div>
+                  )}
 
-                  <div className="card-actions justify-center mt-4">
+                  <div className="card-actions justify-center mt-4 text-center">
                     <Link
                       to={`/ProductDetails/${_id}`}
                       className="btn btn-sm btn-outline btn-primary w-1/2 sm:w-5/12"
