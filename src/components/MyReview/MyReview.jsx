@@ -10,6 +10,10 @@ const MyReview = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Modal state
+  const [showModal, setShowModal] = useState(false);
+  const [selectedReviewId, setSelectedReviewId] = useState(null);
+
   useEffect(() => {
     document.title = "MyReview";
   }, []);
@@ -24,18 +28,31 @@ const MyReview = () => {
   }, [user]);
 
   const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this review?")) return;
     axios
       .delete(`http://localhost:3000/addreview/${id}`)
       .then(() => {
         toast.success("Review deleted successfully");
         setReviews(reviews.filter((rev) => rev._id !== id));
       })
-      .catch(() => toast.error("Failed to delete review"));
+      .catch(() => toast.error("Failed to delete review"))
+      .finally(() => {
+        setShowModal(false);
+        setSelectedReviewId(null);
+      });
   };
 
   const handleEdit = (id) => {
     navigate(`/editreview/${id}`);
+  };
+
+  const openModal = (id) => {
+    setSelectedReviewId(id);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedReviewId(null);
   };
 
   if (loading)
@@ -110,8 +127,8 @@ const MyReview = () => {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(review._id)}
-                  className="flex-1 px-4 py-2 bg-primary text-white rounded"
+                  onClick={() => openModal(review._id)}
+                  className="flex-1 px-4 py-2 bg-primary  text-white rounded"
                 >
                   Delete
                 </button>
@@ -119,6 +136,30 @@ const MyReview = () => {
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h3 className="text-xl font-semibold mb-4">Confirm Delete</h3>
+            <p className="mb-6">Are you sure you want to delete this review?</p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-primary text-white rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDelete(selectedReviewId)}
+                className="px-4 py-2 bg-primary text-white rounded"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

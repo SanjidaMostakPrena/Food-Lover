@@ -8,7 +8,7 @@ const AddReview = () => {
 
   const { user } = useContext(AuthContext);
 
-  // Default food image preview
+
   const [foodImagePreview, setFoodImagePreview] = useState("https://images.unsplash.com/photo-1627308595229-7830a5c91f9f");
 
   const handleAddReviewSubmit = (e) => {
@@ -59,7 +59,7 @@ const AddReview = () => {
         <p className="text-gray-500 mt-2">Share your thoughts and experiences about your favorite dishes!</p>
       </div>
 
-      {/* Food Image Preview */}
+  
       <div className="flex justify-center mb-6">
         <img
           src={foodImagePreview}
@@ -70,7 +70,6 @@ const AddReview = () => {
 
       {/* Form */}
       <form onSubmit={handleAddReviewSubmit} className="space-y-4">
-        {/* User Info (read-only) */}
         <input
           type="text"
           value={user?.displayName || "Anonymous"}
@@ -92,8 +91,6 @@ const AddReview = () => {
           required
           className="w-full border p-2 rounded"
         />
-
-        {/* Food Image URL */}
         <input
           type="text"
           name="foodImage"

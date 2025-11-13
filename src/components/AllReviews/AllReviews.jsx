@@ -15,8 +15,6 @@ const AllReviews = () => {
   useEffect(() => {
     document.title = "All Reviews";
   }, []);
-
-  // Fetch products + reviews
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
@@ -197,6 +195,7 @@ const AllReviews = () => {
             );
           })}
         </div>
+       
       )}
     </div>
   );
