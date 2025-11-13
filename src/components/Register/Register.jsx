@@ -1,11 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const Register = () => {
+  useEffect(() => {
+    document.title = "Register";
+  }, []);
+
   const { createUser, signInWithGoogle, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [photoURL, setPhotoURL] = useState('');
   const [password, setPassword] = useState('');
@@ -31,7 +36,6 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    
     if (!passwordValid.length || !passwordValid.uppercase || !passwordValid.lowercase) {
       Swal.fire({
         icon: 'error',
@@ -100,9 +104,10 @@ const Register = () => {
 
   return (
     <div className="card bg-base-100 w-full mx-auto max-w-sm shadow-2xl mt-20">
-      <h1 className="text-5xl font-bold text-center mt-4">Register now!</h1>
-      <form onSubmit={handleRegister} className="card-body">
+      <h1 className="text-4xl font-bold text-center mt-4">Register now!</h1>
+      <form onSubmit={handleRegister} className="card-body" autoComplete="off">
         <fieldset className="fieldset">
+          {/* Email */}
           <label className="label">Email</label>
           <input
             type="email"
@@ -110,9 +115,11 @@ const Register = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
             required
           />
 
+          {/* Photo URL */}
           <label className="label">Photo URL</label>
           <input
             type="text"
@@ -120,9 +127,11 @@ const Register = () => {
             placeholder="Photo URL"
             value={photoURL}
             onChange={(e) => setPhotoURL(e.target.value)}
+            autoComplete="off"
             required
           />
 
+          {/* Password */}
           <label className="label">Password</label>
           <input
             type="password"
@@ -130,10 +139,11 @@ const Register = () => {
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
+            autoComplete="new-password"
             required
           />
 
-          
+          {/* Password validation */}
           <ul className="text-sm mt-1 ml-2">
             <li className={passwordValid.length ? 'text-green-600' : 'text-red-600'}>
               {passwordValid.length ? '✔' : '✖'} At least 6 characters
@@ -146,6 +156,7 @@ const Register = () => {
             </li>
           </ul>
 
+          {/* Confirm Password */}
           <label className="label">Confirm Password</label>
           <input
             type="password"
@@ -153,27 +164,29 @@ const Register = () => {
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            autoComplete="new-password"
             required
           />
 
-          <div>
-            <a className="link link-hover">Forgot password?</a>
+          <div className="mt-2">
+            <a className="link link-hover text-sm">Forgot password?</a>
           </div>
-<button
-  type="submit"
-  className="btn btn-neutral mt-4"
->
-  Register
-</button>
 
+          {/* Submit button */}
+          <button
+            type="submit"
+            className="btn btn-neutral mt-4 w-full"
+          >
+            Register
+          </button>
         </fieldset>
 
+        {/* Google Sign-In */}
         <button
           type="button"
           onClick={handleGoogleSignIn}
-          className="btn bg-white text-black border-[#e5e5e5] mt-4 flex items-center justify-center"
+          className="btn bg-white text-black border-[#e5e5e5] mt-4 flex items-center justify-center w-full"
         >
-      
           <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="mr-2">
             <g>
               <path d="M0 0H512V512H0z" fill="#fff"></path>

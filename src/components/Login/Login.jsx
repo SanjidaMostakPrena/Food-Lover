@@ -1,12 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 
 const Login = () => {
+   useEffect(() => {
+    document.title = "Login";
+  }, []);
+
   const { signInUser, signInWithGoogle } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Handle login with email & password
+
   const handleLogin = (e) => {
     e.preventDefault();
     signInUser(email, password)
@@ -18,7 +22,7 @@ const Login = () => {
       });
   };
 
-  // Handle Google sign-in
+ 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
       .then(result => {

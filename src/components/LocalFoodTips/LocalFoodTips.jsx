@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 
 const LocalFoodTips = () => {
-  const [expandedId, setExpandedId] = useState(null); /
+  const [expandedId, setExpandedId] = useState(null);
 
   const tips = [
     {
       id: 1,
       title: "Discover Traditional Bangladeshi Snacks",
-      image: "https://i.ibb.co.com/8nD9gsXL/top-view-tasty-cone-shape-fried-corn-snacks-bucket-sack-cloth-with-pine-nuts-wooden-bowl-with-shelle.jpg",
+      image: "https://i.ibb.co/8nD9gsXL/top-view-tasty-cone-shape-fried-corn-snacks-bucket-sack-cloth-with-pine-nuts-wooden-bowl-with-shelle.jpg",
       description: "From fuchka to chotpoti, explore popular local snacks that everyone loves!",
       details: "Fuchka, chotpoti, jhalmuri and more. These snacks are popular in local markets and street food corners. Try them with friends and enjoy authentic flavors!"
     },
     {
       id: 2,
       title: "Must-Try Regional Dishes",
-      image: "https://i.ibb.co.com/1JTd4jvW/top-view-indian-food-condiments.jpg",
+      image: "https://i.ibb.co/1JTd4jvW/top-view-indian-food-condiments.jpg",
       description: "Every region has its own unique flavors. Learn about traditional dishes across Bangladesh.",
       details: "Regional dishes like Bhuna Khichuri, Panta Ilish, and Shutki Bhuna are rich in flavor and culture. Exploring these dishes gives you a taste of Bangladesh’s diverse culinary heritage."
     },
   ];
 
   const toggleExpand = (id) => {
-    setExpandedId(expandedId === id ? null : id); 
+    setExpandedId(expandedId === id ? null : id);
   };
 
   return (

@@ -4,6 +4,10 @@ import { AuthContext } from "../../contexts/AuthContext";
 import toast from "react-hot-toast";
 
 const AllReviewsWithFavorites = () => {
+     useEffect(() => {
+    document.title = "AllRevies";
+  }, []);
+
   const { user } = useContext(AuthContext);
   const [reviews, setReviews] = useState([]);
   const [favorites, setFavorites] = useState([]);

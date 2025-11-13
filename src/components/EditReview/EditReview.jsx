@@ -3,6 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const EditReview = () => {
+     useEffect(() => {
+    document.title = "EditReview";
+  }, []);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [review, setReview] = useState({

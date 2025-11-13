@@ -141,11 +141,16 @@
 
 
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from '../../contexts/AuthContext';
 
 const AddReview = () => {
+     useEffect(() => {
+    document.title = "AddReview";
+  }, []);
+
   const { user } = useContext(AuthContext);
+  
 
   const handleAddReviewSubmit = (e) => {
     e.preventDefault();
@@ -184,6 +189,7 @@ const AddReview = () => {
       })
       .catch((err) => console.error("❌ Error adding review:", err));
   };
+  
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 border rounded-2xl shadow">

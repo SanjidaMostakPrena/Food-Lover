@@ -7,7 +7,11 @@ const AllFood = () => {
   const [query, setQuery] = useState("");
   const [filteredReviews, setFilteredReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState([]);
 
+  useEffect(() => {
+    document.title = "AllFood";
+  }, []);
 
   useEffect(() => {
     axios
@@ -24,7 +28,6 @@ const AllFood = () => {
       .finally(() => setLoading(false));
   }, []);
 
-
   const handleSearch = () => {
     const filtered = reviews.filter((review) =>
       review.foodName.toLowerCase().includes(query.toLowerCase())
@@ -32,66 +35,99 @@ const AllFood = () => {
     setFilteredReviews(filtered);
   };
 
+  const toggleFavorite = (id) => {
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
+    );
+  };
+
   if (loading) return <p className="text-center mt-10">Loading reviews...</p>;
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
-
-      <div className="flex gap-2 mb-6">
+    <div className="max-w-6xl mx-auto p-4">
+      {/* Search */}
+      <div className="flex mb-6 justify-center">
         <input
           type="text"
           placeholder="Search food..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="input input-bordered w-full"
+          className="input input-bordered w-2/3 sm:w-1/3 mr-2"
         />
         <button onClick={handleSearch} className="btn btn-primary">
           Search
         </button>
       </div>
 
+      {/* Food Cards */}
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {filteredReviews.map((review) => {
+          const {
+            _id,
+            foodName,
+            restaurantName,
+            restaurantLocation,
+            reviewerName,
+            rating,
+            photo,
+          } = review;
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {filteredReviews.map((review) => (
-          <div
-            key={review._id}
-            className="card bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300 relative"
-          >
+          const isFavorite = favorites.includes(_id);
 
-            <figure className="h-48 sm:h-56 md:h-64 overflow-hidden">
-              <img
-                src={review.photo}
-                alt={review.foodName}
-                className="w-full h-full object-cover"
-              />
-            </figure>
+          return (
+            <div
+              key={_id}
+              className="card bg-base-100 shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow relative"
+            >
+              {/* Favorite Button */}
+              <button
+                onClick={() => toggleFavorite(_id)}
+                className={`absolute top-2 right-2 text-2xl transition-transform duration-200 hover:scale-125 ${
+                  isFavorite ? "text-red-500" : "text-gray-400"
+                }`}
+              >
+                ♥
+              </button>
 
+              {/* Food Image */}
+              <figure className="h-48 sm:h-56 md:h-64 overflow-hidden">
+                <img
+                  src={photo}
+                  alt={foodName}
+                  className="w-full h-full object-cover"
+                />
+              </figure>
 
-            <div className="p-4">
-              <h2 className="text-lg sm:text-xl font-semibold">
-                {review.foodName}
-              </h2>
-              <p className="text-gray-600 text-sm sm:text-base">
-                {review.restaurantName} — {review.restaurantLocation}
-              </p>
+              {/* Card Body */}
+              <div className="card-body p-4">
+                <h2 className="card-title text-lg sm:text-xl font-semibold">
+                  {foodName}
+                </h2>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  {restaurantName} — {restaurantLocation}
+                </p>
 
+                <div className="flex items-center justify-between mt-2">
+                  <span className="font-medium text-sm sm:text-base">
+                    {reviewerName}
+                  </span>
+                  <span className="badge badge-primary text-sm sm:text-base">
+                    {rating} ★
+                  </span>
+                </div>
 
-              <div className="flex items-center justify-between mt-2">
-                <span className="badge badge-primary text-sm sm:text-base">
-                  {review.rating} ★
-                </span>
-              </div>
-              <div className="mt-4">
-                <Link
-                  to={`/ProductDetails/${review._id}`}
-                  className="btn btn-sm btn-outline btn-primary w-full"
-                >
-                  View Details
-                </Link>
+                <div className="card-actions justify-center mt-4 text-center">
+                  <Link
+                    to={`/ProductDetails/${_id}`}
+                    className="btn btn-sm btn-outline btn-primary w-1/2 sm:w-5/12"
+                  >
+                    Food Details
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
