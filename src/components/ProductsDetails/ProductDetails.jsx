@@ -19,7 +19,7 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4">
-      {/* Product Card */}
+    
       <div className="max-w-5xl mx-auto mb-12">
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row transform transition-transform hover:scale-105 duration-300">
           <div className="md:w-1/2 relative">
@@ -49,7 +49,7 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* Popular Restaurants */}
+     
       <div className="max-w-5xl mx-auto mb-12">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">Popular Restaurants</h2>
         <div className="grid md:grid-cols-3 gap-6">
@@ -62,7 +62,6 @@ const ProductDetails = () => {
         </div>
       </div>
 
-      {/* Related Dishes */}
       <div className="max-w-5xl mx-auto mb-12">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">You May Also Like</h2>
         <div className="grid md:grid-cols-3 gap-6">

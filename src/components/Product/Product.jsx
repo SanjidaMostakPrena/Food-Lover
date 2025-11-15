@@ -69,7 +69,7 @@ const Product = ({ product }) => {
     <div className="relative w-full sm:w-80 md:w-96 mx-auto">
       <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-300">
 
-        {/* Image */}
+       
         <figure className="h-48 sm:h-56 md:h-64 overflow-hidden">
           <img
             src={photo}
@@ -78,7 +78,7 @@ const Product = ({ product }) => {
           />
         </figure>
 
-        {/* Content */}
+       
         <div className="p-5">
 
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-1">{foodName}</h2>

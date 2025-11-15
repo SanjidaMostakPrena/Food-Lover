@@ -40,7 +40,6 @@ const AllFood = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      {/* Header */}
       <div className="text-center mb-10">
         <h1 className="text-4xl sm:text-5xl font-bold mb-3 text-gray-800">
           Welcome Food Lovers!
@@ -71,17 +70,7 @@ const AllFood = () => {
               key={_id}
               className="relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
             >
-              {/* Favorite Heart Button */}
-              <button
-                onClick={() => toggleFavorite(_id)}
-                className={`absolute -top-3 right-3 z-20 text-3xl p-2 rounded-full shadow-lg bg-white hover:scale-125 transition-all duration-300 ${
-                  isFavorite ? "text-red-500" : "text-gray-400"
-                }`}
-              >
-                ♥
-              </button>
-
-              {/* Food Image */}
+            
               <figure className="h-56 sm:h-64 overflow-hidden">
                 <img
                   src={photo}

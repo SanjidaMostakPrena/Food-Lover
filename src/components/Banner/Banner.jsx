@@ -40,32 +40,77 @@ const Banner = () => {
   ];
 
   return (
-    <div className="relative">
+    <div className="relative w-full max-w-full overflow-hidden">
       <Slider {...settings}>
         {slides.map((slide, index) => (
           <div key={index} className="relative">
+
             {/* Background Image */}
             <img
               src={slide.image}
               alt={slide.heading}
-              className="w-full h-[500px] sm:h-[600px] md:h-[700px] lg:h-[650px] object-cover rounded-lg shadow-lg"
+              className="
+                w-full 
+                h-[260px]        /* Mobile height (375px) */
+                sm:h-[400px] 
+                md:h-[550px] 
+                lg:h-[650px] 
+                object-cover 
+                rounded-lg 
+                shadow-lg
+              "
             />
 
-            {/* Overlay Gradient */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50 rounded-lg"></div>
 
-            {/* Text Content */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center px-4">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 drop-shadow-lg">
+            <div
+              className="
+                absolute top-1/2 left-1/2 transform 
+                -translate-x-1/2 -translate-y-1/2 
+                text-center 
+                px-3 sm:px-6
+              "
+            >
+              <h2
+                className="
+                  text-2xl         /* Perfect for 375px */
+                  sm:text-3xl 
+                  md:text-5xl 
+                  font-bold 
+                  text-white 
+                  mb-2 sm:mb-3 
+                  drop-shadow-lg
+                "
+              >
                 {slide.heading}
               </h2>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-5 drop-shadow-md">
+
+              <p
+                className="
+                  text-sm sm:text-lg md:text-2xl 
+                  text-gray-200 
+                  mb-4 sm:mb-5 
+                  drop-shadow-md
+                "
+              >
                 {slide.subHeading}
               </p>
-              <button className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-500 hover:shadow-lg transition duration-300">
+
+              <button
+                className="
+                  bg-yellow-400 text-black font-semibold 
+                  px-4 py-2 sm:px-6 sm:py-2 
+                  rounded-lg 
+                  shadow-md 
+                  hover:bg-yellow-500 hover:shadow-lg 
+                  transition duration-300
+                  text-sm sm:text-base
+                "
+              >
                 Explore Now
               </button>
             </div>
+
           </div>
         ))}
       </Slider>

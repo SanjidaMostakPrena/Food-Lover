@@ -56,23 +56,22 @@ const AddReview = () => {
 
   return (
     <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded-3xl shadow-xl">
-      {/* Toast container */}
-      <ToastContainer 
-        position="top-right" 
-        autoClose={3000} 
-        hideProgressBar={false} 
-        closeOnClick 
-        pauseOnHover 
-        draggable 
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
       />
 
-      {/* Header */}
       <div className="text-center mb-6">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">Add Your Food Review</h1>
+        <h1 className="text-4xl sm:text-5xl font-bold mb-3 text-gray-800 text-center justify-center">Add Your Food Review</h1>
         <p className="text-gray-500 mt-2 sm:text-lg">Share your thoughts and experiences about your favorite dishes!</p>
       </div>
 
-      {/* Food Preview */}
+
       <div className="flex justify-center mb-6">
         <img
           src={foodImagePreview}
@@ -81,7 +80,7 @@ const AddReview = () => {
         />
       </div>
 
-      {/* Form */}
+
       <form onSubmit={handleAddReviewSubmit} className="space-y-4">
         <input
           type="text"

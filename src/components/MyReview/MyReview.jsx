@@ -66,14 +66,13 @@ const MyReview = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-2 sm:p-6">
-      {/* Title */}
-      <h2 className="text-xl sm:text-3xl font-bold text-center mb-3 sm:mb-6 text-gray-900">
+   
+      <h2 className="text-4xl sm:text-5xl font-bold mb-3 text-gray-800 text-center justify-center">
         My Reviews: <span className="text-purple-600">{reviews.length}</span>
       </h2>
 
-      {/* No reviews */}
       {reviews.length === 0 ? (
-        <p className="text-center text-gray-500 text-xs sm:text-sm">
+        <p className="text-center text-gray-500 text-4xl sm:text-sm">
           You have not posted any reviews yet.
         </p>
       ) : (
@@ -81,7 +80,7 @@ const MyReview = () => {
           <table className="min-w-full text-left text-[9px] sm:text-sm">
             <thead>
               <tr className="bg-gray-100 text-gray-700">
-                <th className="py-1 px-1 sm:py-2 sm:px-3 border-b font-semibold">#</th>
+                <th className="py-1 px-1 sm:py-2 sm:px-3 border-b font-semibold">No</th>
                 <th className="py-1 px-1 sm:py-2 sm:px-3 border-b font-semibold">Img</th>
                 <th className="py-1 px-1 sm:py-2 sm:px-3 border-b font-semibold">Food</th>
                 <th className="py-1 px-1 sm:py-2 sm:px-3 border-b font-semibold">Rest.</th>
@@ -137,12 +136,12 @@ const MyReview = () => {
         </div>
       )}
 
-      {/* Delete Modal */}
+     
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white p-2 sm:p-6 rounded-lg shadow-xl w-56 sm:w-80">
             <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-4">Confirm Delete</h3>
-            <p className="text-gray-700 mb-3 sm:mb-6 text-xs sm:text-sm">
+            <p className="text-gray-700 mb-3 sm:mb-6 text-xs sm:text-sm text-base-200">
               Are you sure you want to delete this review?
             </p>
 

@@ -22,7 +22,6 @@ const Register = () => {
     const confirmPassword = e.target.confirmPassword.value.trim();
     const photoURL = e.target.photoURL.value.trim();
 
-    // Password validation
     if (!/[A-Z]/.test(password)) {
       setPasswordError("Password must include at least one uppercase letter.");
       setLoading(false);
@@ -33,7 +32,7 @@ const Register = () => {
       setLoading(false);
       return;
     }
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
       setPasswordError("Password must include at least one special character.");
       setLoading(false);
       return;
@@ -51,10 +50,8 @@ const Register = () => {
     }
 
     try {
-      // 1️⃣ Create user with email/password in Firebase
       const result = await createUser(email, password);
 
-      // 2️⃣ Save user to backend
       const userData = {
         name: name || email.split("@")[0],
         email,
@@ -71,8 +68,11 @@ const Register = () => {
       if (!response.ok) throw new Error(data.message || "Failed to save user");
 
       toast.success("Registration successful!");
+
       e.target.reset();
-      navigate("/");
+
+      setTimeout(() => navigate("/"), 800);
+
     } catch (err) {
       console.error(err);
       setError(err.message || "Registration failed. Try again.");
@@ -88,7 +88,6 @@ const Register = () => {
     try {
       const result = await signInWithGoogle();
 
-      // Save Google user to backend
       const userData = {
         name: result.user.displayName,
         email: result.user.email,
@@ -105,7 +104,9 @@ const Register = () => {
       if (!response.ok) throw new Error(data.message || "Failed to save Google user");
 
       toast.success("Google Sign-In successful!");
-      navigate("/");
+
+      setTimeout(() => navigate("/"), 800);
+
     } catch (err) {
       console.error(err);
       setError(err.message || "Google Sign-In failed.");

@@ -12,7 +12,7 @@ const Footer = () => {
       <div className="relative text-gray-300 py-16">
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
 
-          {/* Logo & About */}
+       
           
             <div className="flex flex-col gap-4">
   <div className="flex items-center justify-center md:justify-start gap-3">
@@ -26,7 +26,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+        
           <div>
             <h3 className="text-xl font-semibold text-white mb-4 tracking-wide">
               Quick Links
@@ -56,7 +56,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Social Media */}
+          
           <div>
             <h3 className="text-xl font-semibold text-white mb-4 tracking-wide">
               Follow Us
@@ -76,7 +76,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Section */}
         <div className="border-t border-gray-700 mt-10 pt-5 text-center text-sm text-gray-400">
           © {new Date().getFullYear()}{" "}
           <span className="text-white font-medium">Local Food Lovers</span> — All rights reserved.

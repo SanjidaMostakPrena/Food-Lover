@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const EditReview = () => {
   const loaderData = useLoaderData(); 
   const navigate = useNavigate();
@@ -18,7 +21,6 @@ const EditReview = () => {
 
   const API_URL = "https://food-server-green.vercel.app/addreview";
 
-  
   useEffect(() => {
     if (loaderData) {
       setReview({
@@ -51,16 +53,19 @@ const EditReview = () => {
     })
       .then((res) => res.json())
       .then(() => {
-        alert("Review updated successfully!");
-        navigate("/myreview"); 
+        toast.success("Review updated successfully!");
+
+        
+        setTimeout(() => {
+          navigate("/myreview");
+        }, 1200);
       })
       .catch((err) => console.error("Update error:", err));
   };
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow rounded mt-8">
-     
-    
+
       {review.photo && (
         <div className="flex justify-center mb-6">
           <img
@@ -71,7 +76,7 @@ const EditReview = () => {
         </div>
       )}
 
-      <h2 className="text-2xl font-bold mb-4 text-center">Edit Review</h2>
+      <h2 className="text-4xl sm:text-5xl font-bold mb-3 text-gray-800 text-center justify-center">Edit Review</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -159,6 +164,8 @@ const EditReview = () => {
 
         <button className="btn btn-primary w-full">Update Review</button>
       </form>
+
+      <ToastContainer position="top-center" autoClose={1200} />
     </div>
   );
 };

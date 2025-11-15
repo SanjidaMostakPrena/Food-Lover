@@ -60,7 +60,7 @@ const AllReviews = () => {
     }
 
     if (favorites.includes(item._id)) {
-      toast("Already in favorites ❤️");
+      toast("Already in favorites ❤");
       return;
     }
 
@@ -80,7 +80,7 @@ const AllReviews = () => {
         favoriteData
       );
       if (res.data.success) {
-        toast.success("Added to favorites ❤️");
+        toast.success("Added to favorites ❤");
         setFavorites([...favorites, item._id]);
       } else {
         toast.error(res.data.message || "Failed to add favorite");
@@ -104,101 +104,71 @@ const AllReviews = () => {
 
   if (loading)
     return (
-      <p className="text-center mt-10 text-lg font-medium">Loading data...</p>
+      <p className="text-center mt-4 text-sm font-medium">Loading data...</p>
     );
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2">All User Review & Products</h1>
-        <p className="text-gray-700 text-lg">
+    <div className="max-w-7xl mx-auto p-1 sm:p-4">
+      <div className="text-center mb-2 sm:mb-6">
+        <h1 className="text-xl sm:text-4xl font-bold mb-1 sm:mb-2">All User Reviews & Products</h1>
+        <p className="text-gray-700 text-xs sm:text-lg">
           Explore all reviews and products with ratings, images, and comments.
         </p>
       </div>
 
-      <div className="flex mb-6 justify-center">
+      <div className="flex mb-2 sm:mb-4 justify-center flex-wrap gap-1 sm:gap-2">
         <input
           type="text"
           placeholder="Search food..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="input input-bordered w-2/3 sm:w-1/3 mr-2"
+          className="input input-bordered w-full sm:w-1/3 text-xs sm:text-base py-1 sm:py-2"
         />
-        <button onClick={handleSearch} className="btn btn-primary">
+        <button onClick={handleSearch} className="btn btn-primary text-xs sm:text-base py-1 sm:py-2">
           Search
         </button>
       </div>
 
-      {/* ⭐ Reviews Table */}
+      {/* Reviews Table */}
       {filteredReviews.length > 0 && (
-        <div className="overflow-x-auto mb-12 shadow-lg rounded-xl border border-gray-200 bg-white">
-          <table className="min-w-full text-left text-[8px] sm:text-sm">
-            <thead>
-              <tr className="bg-gray-100 text-gray-700">
-                <th className="py-1 px-1 sm:py-3 sm:px-4 border-b font-semibold">Img</th>
-                <th className="py-1 px-1 sm:py-3 sm:px-4 border-b font-semibold">Food</th>
-                <th className="py-1 px-1 sm:py-3 sm:px-4 border-b font-semibold">Restaurant</th>
-                <th className="py-1 px-1 sm:py-3 sm:px-4 border-b font-semibold">Reviewer</th>
-                <th className="py-1 px-1 sm:py-3 sm:px-4 border-b font-semibold">Rating</th>
-                <th className="py-1 px-1 sm:py-3 sm:px-4 border-b font-semibold">Review</th>
-                <th className="py-1 px-1 sm:py-3 sm:px-4 border-b font-semibold text-center">Fav</th>
+        <div className="shadow-lg rounded-xl border border-gray-200 bg-white overflow-hidden">
+          <table className="min-w-full table-auto text-left divide-y divide-gray-200 text-xs sm:text-sm">
+            <thead className="bg-yellow-50">
+              <tr>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Img</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Food</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Restaurant</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Reviewer</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2 text-center">Rating</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Review</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2 text-center">Fav</th>
               </tr>
             </thead>
-
-            <tbody>
+            <tbody className="divide-y divide-gray-100">
               {filteredReviews.map((item) => {
-                const {
-                  _id,
-                  foodName,
-                  restaurantName,
-                  location,
-                  foodImage,
-                  reviewText,
-                  rating,
-                  userName,
-                } = item;
-
+                const { _id, foodName, restaurantName, location, foodImage, reviewText, rating, userName } = item;
                 const isFavorite = favorites.includes(_id);
 
                 return (
-                  <tr
-                    key={_id}
-                    className="hover:bg-gray-50 transition border-b text-[8px] sm:text-sm"
-                  >
-                    <td className="py-1 px-1 sm:py-3 sm:px-4">
+                  <tr key={_id} className="hover:bg-yellow-50 transition">
+                    <td className="px-1 sm:px-2 py-1 sm:py-2">
                       <img
                         src={foodImage}
                         alt={foodName}
-                        className="w-8 h-8 sm:w-16 sm:h-16 object-cover rounded-md border"
+                        className="w-6 h-6 sm:w-12 sm:h-12 object-cover rounded-md border"
                       />
                     </td>
-
-                    <td className="py-1 px-1 sm:py-3 sm:px-4 font-medium text-gray-800">
-                      {foodName}
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 font-semibold break-words">{foodName}</td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 break-words">{restaurantName} — {location}</td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 break-words">{userName}</td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 text-center">
+                      <span className="badge badge-primary text-xs sm:text-sm">{rating} ★</span>
                     </td>
-
-                    <td className="py-1 px-1 sm:py-3 sm:px-4 text-gray-700 truncate max-w-[70px] sm:max-w-xs">
-                      {restaurantName} — {location}
-                    </td>
-
-                    <td className="py-1 px-1 sm:py-3 sm:px-4 text-gray-700 truncate max-w-[50px] sm:max-w-xs">
-                      {userName}
-                    </td>
-
-                    <td className="py-1 px-1 sm:py-3 sm:px-4">
-                      <span className="badge badge-primary text-[8px] sm:text-sm">{rating} ★</span>
-                    </td>
-
-                    <td className="py-1 px-1 sm:py-3 sm:px-4 text-gray-600 truncate max-w-[80px] sm:max-w-xs">
-                      {reviewText ? reviewText : "—"}
-                    </td>
-
-                    <td className="py-1 px-1 sm:py-3 sm:px-4 text-center">
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 break-words">{reviewText || "—"}</td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 text-center">
                       <button
                         onClick={() => handleFavorite(item)}
-                        className={`text-xl sm:text-2xl transition-transform hover:scale-125 ${
-                          isFavorite ? "text-red-500" : "text-gray-400"
-                        }`}
+                        className={`text-lg sm:text-xl transition-transform hover:scale-125 ${isFavorite ? "text-red-500" : "text-gray-400"}`}
                       >
                         ♥
                       </button>
@@ -211,80 +181,62 @@ const AllReviews = () => {
         </div>
       )}
 
-      {/* Products */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2">All User Review & Products</h1>
-        <p className="text-gray-700 text-lg">
-          Explore all reviews and products with ratings, images, and comments.
-        </p>
-      </div>
-
+      {/* Products Table */}
       {filteredProducts.length > 0 && (
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {filteredProducts.map((item) => {
-            const {
-              _id,
-              photo,
-              foodName,
-              restaurantName,
-              restaurantLocation,
-              reviewerName,
-              rating,
-            } = item;
+        <div className="mt-2 sm:mt-4 shadow-lg rounded-xl border border-gray-200 bg-white overflow-hidden">
+          <table className="min-w-full table-auto text-left divide-y divide-gray-200 text-xs sm:text-sm">
+            <thead className="bg-yellow-50">
+              <tr>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Img</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Food</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Restaurant</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Reviewer</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2 text-center">Rating</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2 text-center">Details</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2 text-center">Fav</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {filteredProducts.map((item) => {
+                const { _id, photo, foodName, restaurantName, restaurantLocation, reviewerName, rating } = item;
+                const isFavorite = favorites.includes(_id);
 
-            const isFavorite = favorites.includes(_id);
-
-            return (
-              <div
-                key={_id}
-                className="card bg-base-100 shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow relative"
-              >
-                <button
-                  onClick={() => handleFavorite(item)}
-                  className={`absolute top-2 right-2 text-2xl transition-transform duration-200 hover:scale-125 ${
-                    isFavorite ? "text-red-500" : "text-white"
-                  }`}
-                >
-                  ♥
-                </button>
-
-                <figure className="h-48 sm:h-56 md:h-64 overflow-hidden">
-                  <img
-                    src={photo}
-                    alt={foodName}
-                    className="w-full h-full object-cover"
-                  />
-                </figure>
-
-                <div className="card-body p-4">
-                  <h2 className="card-title text-lg sm:text-xl font-semibold">
-                    {foodName}
-                  </h2>
-                  <p className="text-gray-600 text-sm sm:text-base">
-                    {restaurantName} — {restaurantLocation}
-                  </p>
-
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="font-medium text-sm sm:text-base">
-                      {reviewerName}
-                    </span>
-                    <span className="badge badge-primary text-sm sm:text-base">
-                      {rating} ★
-                    </span>
-                  </div>
-
-                  <div className="card-actions justify-center mt-4 text-center">
-                    <Link
-                      to={`/productdetails/${_id}`}
-                      className="btn btn-sm btn-outline btn-primary w-1/2 sm:w-5/12"
-                    >
-                      Food Details
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                return (
+                  <tr key={_id} className="hover:bg-yellow-50 transition">
+                    <td className="px-1 sm:px-2 py-1 sm:py-2">
+                      <img
+                        src={photo}
+                        alt={foodName}
+                        className="w-6 h-6 sm:w-12 sm:h-12 object-cover rounded-md border"
+                      />
+                    </td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 font-semibold break-words">{foodName}</td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 break-words">{restaurantName} — {restaurantLocation}</td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 break-words">{reviewerName}</td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 text-center">
+                      <span className="badge badge-primary text-xs sm:text-sm">{rating} ★</span>
+                    </td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 text-center">
+                      <Link
+                        to={`/productdetails/${_id}`}
+                        className="btn btn-xs sm:btn-sm btn-outline btn-primary"
+                      >
+                        Details
+                      </Link>
+                    </td>
+                    <td className="px-1 sm:px-2 py-1 sm:py-2 text-center">
+                      <button
+                        onClick={() => handleFavorite(item)}
+                        className={`text-lg sm:text-xl transition-transform hover:scale-125 ${isFavorite ? "text-red-500" : "text-gray-400"}`}
+                      >
+                        ♥
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

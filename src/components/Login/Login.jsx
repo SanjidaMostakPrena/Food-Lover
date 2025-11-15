@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const Login = () => {
   useEffect(() => {
     document.title = "Login";
@@ -23,8 +26,13 @@ const Login = () => {
     try {
       const result = await signInUser(email, password);
       console.log('User logged in:', result.user);
-      alert("Login successful!");
-      navigate('/');
+
+      toast.success("Login successful!", { autoClose: 1500 }); 
+
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
+
     } catch (err) {
       console.error('Login error:', err);
       setError(err.message || 'Login failed. Try again.');
@@ -41,7 +49,6 @@ const Login = () => {
       const result = await signInWithGoogle();
       const user = result.user;
 
-    
       const response = await fetch('https://food-server-green.vercel.app/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -53,8 +60,12 @@ const Login = () => {
       });
       await response.json();
 
-      alert("Google Sign-In successful!");
-      navigate('/');
+      toast.success("Google Sign-In successful!", { autoClose: 1500 }); // 🔥 Toastify Added
+
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
+
     } catch (err) {
       console.error(err);
       setError(err.message || 'Google Sign-In failed.');
@@ -65,6 +76,9 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-yellow-50 via-orange-50 to-pink-50 px-4">
+
+      <ToastContainer /> {/* 🔥 REQUIRED */}
+
       <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
         <div className="p-8 sm:p-10 md:p-12">
           <h1 className="text-4xl md:text-5xl font-extrabold text-center text-gray-800 mb-6">
@@ -100,10 +114,6 @@ const Login = () => {
             </div>
 
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-
-            <div className="flex justify-between mt-2">
-              <a className="text-sm text-yellow-600 hover:underline">Forgot password?</a>
-            </div>
 
             <button
               type="submit"
