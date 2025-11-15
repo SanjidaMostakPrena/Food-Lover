@@ -25,15 +25,26 @@ const LocalFoodTips = () => {
   };
 
   return (
-    <section className="py-10 bg-white">
+    <section className="py-16 bg-[#f8f9fa]">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-6 text-center">Local Food Tips & Culture</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <h2 className="text-3xl sm:text-4xl font-bold mb-10 text-center text-gray-800">
+          Local Food Tips & Culture
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           {tips.map((tip) => (
-            <div key={tip.id} className="border rounded-xl overflow-hidden hover:shadow-md transition">
-              <img src={tip.image} alt={tip.title} className="w-full h-48 object-cover"/>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold">{tip.title}</h3>
+            <div
+              key={tip.id}
+              className="relative group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="overflow-hidden">
+                <img
+                  src={tip.image}
+                  alt={tip.title}
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">{tip.title}</h3>
                 <p className="text-gray-600 mt-2">{tip.description}</p>
 
                 {expandedId === tip.id && (
@@ -42,7 +53,7 @@ const LocalFoodTips = () => {
 
                 <button
                   onClick={() => toggleExpand(tip.id)}
-                  className="mt-3 inline-block btn btn-outline btn-primary btn-sm"
+                  className="mt-4 inline-block px-4 py-2 border border-primary text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-colors duration-300"
                 >
                   {expandedId === tip.id ? "Show Less" : "Read More"}
                 </button>

@@ -12,7 +12,7 @@ import AddReview from "./components/AddReview/AddReview.jsx";
 import MyReview from "./components/MyReview/MyReview.jsx";
 import ProductDetails from "./components/ProductsDetails/ProductDetails.jsx";
 import EditReview from "./components/EditReview/EditReview.jsx";
-import MyFavorites from "./components/MyFavorites/MyFavorites.jsx"; // ✅ import added
+import MyFavorites from "./components/MyFavorites/MyFavorites.jsx";
 import ErrorPage from "./components/ErrorPage/ErrorPage.jsx";
 import AllReviews from "./components/AllReviews/AllReviews.jsx";
 
@@ -23,11 +23,14 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, Component: Home },
-      { path: "AllFood", Component: AllFood },
+      { path: "allfood", Component: AllFood },
       {
         path: "editreview/:id",
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/products/${params.id}`),
+        loader: async ({ params }) => {
+          const res = await fetch(`https://food-server-green.vercel.app/addreview/${params.id}`);
+          if (!res.ok) throw new Error("Review not found");
+          return res.json();
+        },
         Component: EditReview,
       },
       { path: "register", Component: Register },
@@ -35,11 +38,14 @@ const router = createBrowserRouter([
       { path: "addreview", Component: AddReview },
       { path: "allreviews", Component: AllReviews },
       { path: "myreview", Component: MyReview },
-      { path: "myFavorites", Component: MyFavorites }, 
+      { path: "myfavorites", Component: MyFavorites },
       {
-        path: "ProductDetails/:id",
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/products/${params.id}`),
+        path: "productdetails/:id",  // ✅ Matches AllReviews Link
+        loader: async ({ params }) => {
+          const res = await fetch(`https://food-server-green.vercel.app/products/${params.id}`);
+          if (!res.ok) throw new Error("Product not found");
+          return res.json();
+        },
         Component: ProductDetails,
       },
     ],

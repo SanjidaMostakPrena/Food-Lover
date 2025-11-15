@@ -1,73 +1,164 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, useLoaderData } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 
 const EditReview = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const loaderData = useLoaderData(); 
-  const [review, setReview] = useState(loaderData || {
-    foodName: "",
-    foodImage: "",
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [review, setReview] = useState({
+    name: "",
+    email: "",
     restaurantName: "",
-    location: "",
+    date: "",
     rating: 1,
-    reviewText: "",
+    message: "",
+    photo: "",
   });
 
+  const API_URL = "https://food-server-green.vercel.app/addreview";
+
+  
   useEffect(() => {
-    document.title = "Edit Review";
-  }, []);
+    if (loaderData) {
+      setReview({
+        name: loaderData.name || "",
+        email: loaderData.email || "",
+        restaurantName: loaderData.restaurantName || "",
+        date: loaderData.date ? loaderData.date.split("T")[0] : "",
+        rating: loaderData.rating || 1,
+        message: loaderData.message || "",
+        photo: loaderData.photo || "",
+      });
+    }
+  }, [loaderData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setReview(prev => ({ ...prev, [name]: value }));
+    setReview((prev) => ({
+      ...prev,
+      [name]: name === "rating" ? Number(value) : value,
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.put(`http://localhost:3000/addreview/${id}`, review);
-      if (res.data.success) {
-        alert("✅ Review updated successfully!");
-        navigate("/myreview");
-      } else {
-        alert("❌ Failed to update review");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("❌ Server error while updating review");
-    }
+
+    fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(review),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        alert("Review updated successfully!");
+        navigate("/myreview"); 
+      })
+      .catch((err) => console.error("Update error:", err));
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 border rounded-2xl shadow-lg bg-white overflow-hidden">
-      <div className="h-[600px] overflow-y-auto">
-        <div className="text-center mt-4 mb-6 px-6">
-          <h1 className="text-3xl font-extrabold text-gray-800">Edit Your Review</h1>
-          <p className="text-gray-500 mt-1">Update your thoughts about this delicious food</p>
+    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded mt-8">
+     
+    
+      {review.photo && (
+        <div className="flex justify-center mb-6">
+          <img
+            src={"https://i.ibb.co.com/XxPbCDMp/medium-shot-woman-with-tasty-food.jpg"}
+            alt="Food Preview"
+            className="w-full max-w-sm h-64 object-cover rounded-xl shadow-md"
+          />
+        </div>
+      )}
+
+      <h2 className="text-2xl font-bold mb-4 text-center">Edit Review</h2>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="font-semibold">Your Name</label>
+          <input
+            type="text"
+            name="name"
+            value={review.name}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
         </div>
 
-        {review.foodImage && (
-          <div className="flex justify-center mb-6 px-6">
-            <img
-              src={review.foodImage}
-              alt={review.foodName}
-              className="w-48 h-48 object-cover rounded-xl shadow-md"
-            />
-          </div>
-        )}
+        <div>
+          <label className="font-semibold">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={review.email}
+            className="input input-bordered w-full"
+            readOnly
+          />
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 px-6 pb-6">
-          <input type="text" name="foodName" value={review.foodName} onChange={handleChange} placeholder="Food Name" required className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <input type="text" name="foodImage" value={review.foodImage} onChange={handleChange} placeholder="Food Image URL" required className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <input type="text" name="restaurantName" value={review.restaurantName} onChange={handleChange} placeholder="Restaurant Name" required className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <input type="text" name="location" value={review.location} onChange={handleChange} placeholder="Location" required className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <input type="number" name="rating" value={review.rating} onChange={handleChange} min="1" max="5" placeholder="Rating (1–5)" required className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <textarea name="reviewText" value={review.reviewText} onChange={handleChange} placeholder="Write your review..." required className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <button type="submit" className="w-full bg-primary text-white py-3 rounded-lg">Update Review</button>
-        </form>
-      </div>
+        <div>
+          <label className="font-semibold">Restaurant Name</label>
+          <input
+            type="text"
+            name="restaurantName"
+            value={review.restaurantName}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="font-semibold">Review Date</label>
+          <input
+            type="date"
+            name="date"
+            value={review.date}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="font-semibold">Rating (1–5)</label>
+          <input
+            type="number"
+            name="rating"
+            value={review.rating}
+            onChange={handleChange}
+            min="1"
+            max="5"
+            className="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="font-semibold">Your Message</label>
+          <textarea
+            name="message"
+            value={review.message}
+            onChange={handleChange}
+            className="textarea textarea-bordered w-full"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="font-semibold">Photo URL</label>
+          <input
+            type="text"
+            name="photo"
+            value={review.photo}
+            onChange={handleChange}
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        <button className="btn btn-primary w-full">Update Review</button>
+      </form>
     </div>
   );
 };

@@ -1,92 +1,140 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-   useEffect(() => {
+  useEffect(() => {
     document.title = "Login";
   }, []);
 
   const { signInUser, signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    signInUser(email, password)
-      .then(result => {
-        console.log('User logged in:', result.user);
-      })
-      .catch(error => {
-        console.error('Login error:', error.message);
-      });
+    setError('');
+    setLoading(true);
+
+    try {
+      const result = await signInUser(email, password);
+      console.log('User logged in:', result.user);
+      alert("Login successful!");
+      navigate('/');
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err.message || 'Login failed. Try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
- 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then(result => {
-        console.log('Google sign in:', result.user);
-      })
-      .catch(error => {
-        console.error(error);
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setLoading(true);
+
+    try {
+      const result = await signInWithGoogle();
+      const user = result.user;
+
+    
+      const response = await fetch('https://food-server-green.vercel.app/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          image: user.photoURL,
+        }),
       });
+      await response.json();
+
+      alert("Google Sign-In successful!");
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'Google Sign-In failed.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="card bg-base-100 w-full mx-auto max-w-sm shadow-2xl mt-20">
-      <h1 className="text-5xl font-bold text-center mt-4">Login now!</h1>
-      <form onSubmit={handleLogin} className="card-body">
-        <fieldset className="fieldset">
-          <label className="label">Email</label>
-          <input
-            type="email"
-            className="input"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-yellow-50 via-orange-50 to-pink-50 px-4">
+      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div className="p-8 sm:p-10 md:p-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-center text-gray-800 mb-6">
+            Welcome Back
+          </h1>
+          <p className="text-center text-gray-600 mb-8">
+            Login to explore the best local foods around you!
+          </p>
 
-          <label className="label">Password</label>
-          <input
-            type="password"
-            className="input"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">Email</label>
+              <input
+                type="email"
+                className="input input-bordered w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
 
-          <div><a className="link link-hover">Forgot password?</a></div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">Password</label>
+              <input
+                type="password"
+                className="input input-bordered w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
 
-          <button type="submit" className="btn btn-neutral mt-4">Login</button>
-        </fieldset>
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 
-        <button
-          type="button"
-          onClick={handleGoogleSignIn}
-          className="btn bg-white text-black border-[#e5e5e5] mt-4"
-        >
-          <svg
-            aria-label="Google logo"
-            width="16"
-            height="16"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-            className="mr-2"
+            <div className="flex justify-between mt-2">
+              <a className="text-sm text-yellow-600 hover:underline">Forgot password?</a>
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-primary w-full mt-4 py-3 rounded-xl text-white bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 transition"
+              disabled={loading}
+            >
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
+          </form>
+
+          <div className="flex items-center my-6">
+            <hr className="flex-grow border-gray-300" />
+            <span className="px-4 text-gray-400">OR</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            className="btn w-full flex items-center justify-center py-3 rounded-xl border border-gray-300 hover:bg-gray-50 transition"
+            disabled={loading}
           >
-            <g>
-              <path d="m0 0H512V512H0" fill="#fff"></path>
-              <path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path>
-              <path fill="#4285f4" d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"></path>
-              <path fill="#fbbc02" d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"></path>
-              <path fill="#ea4335" d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"></path>
-            </g>
-          </svg>
-          Login with Google
-        </button>
-      </form>
+            <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google" className="mr-2" />
+            {loading ? 'Signing in...' : 'Login with Google'}
+          </button>
+
+          <p className="text-center text-gray-600 text-sm mt-6">
+            Don’t have an account? <a href="/register" className="text-yellow-600 font-semibold hover:underline">Sign Up</a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

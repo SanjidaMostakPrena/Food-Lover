@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const MyFavorites = () => {
-   useEffect(() => {
+  useEffect(() => {
     document.title = "MyFavorites";
   }, []);
 
@@ -12,12 +12,12 @@ const MyFavorites = () => {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  
+  // Fetch favorites
   useEffect(() => {
     if (!user?.email) return;
 
     axios
-      .get(`http://localhost:3000/favorites?email=${user.email}`)
+      .get(`https://food-server-green.vercel.app/favorites?email=${user.email}`)
       .then((res) => setFavorites(res.data))
       .catch((err) => {
         console.error(err);
@@ -26,12 +26,16 @@ const MyFavorites = () => {
       .finally(() => setLoading(false));
   }, [user]);
 
+  // Remove favorite
   const handleRemove = async (id) => {
     const confirmDelete = window.confirm("Remove from favorites?");
-    if (!confirmDelete) return;
+    if (!confirmDelete) {
+      toast("Canceled removal 👍"); // Added toast for cancel
+      return;
+    }
 
     try {
-      const res = await axios.delete(`http://localhost:3000/favorites/${id}`);
+      const res = await axios.delete(`https://food-server-green.vercel.app/favorites/${id}`);
       if (res.status === 200 || res.data?.success) {
         setFavorites((prev) => prev.filter((f) => f._id !== id));
         toast.success("Removed from favorites 💔");
@@ -44,47 +48,47 @@ const MyFavorites = () => {
     }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading favorites...</p>;
+  if (loading)
+    return <p className="text-center mt-10 text-lg font-medium">Loading favorites...</p>;
 
   return (
-    <div className="container mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4 text-center">My Favorite Foods</h2>
+    <div className="max-w-6xl mx-auto p-6">
+      {/* Toast container */}
+      <Toaster position="top-right" reverseOrder={false} />
+
+      <h2 className="text-3xl font-bold mb-6 text-center">My Favorite Foods</h2>
 
       {favorites.length === 0 ? (
-        <p className="text-center text-gray-600">No favorites yet.</p>
+        <p className="text-center text-gray-600 text-lg">No favorites yet.</p>
       ) : (
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {favorites.map((fav) => (
             <div
               key={fav._id}
-              className="card bg-base-100 shadow-sm hover:shadow-md p-4 rounded-xl relative transition-all duration-200 ease-in-out"
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 relative overflow-hidden"
             >
-        
+              {/* Remove Button */}
               <button
                 onClick={() => handleRemove(fav._id)}
-                className="absolute top-2 right-2 text-red-500 text-xl hover:scale-110 transition-transform"
+                className="absolute top-3 right-3 text-red-500 text-2xl hover:scale-110 transition-transform shadow-md p-1 rounded-full bg-white"
                 title="Remove from favorites"
               >
                 ✕
               </button>
 
-             
+              {/* Food Image */}
               <img
                 src={fav.foodImage}
                 alt={fav.foodName}
-                className="w-full h-48 object-cover rounded-lg"
+                className="w-full h-56 sm:h-64 object-cover rounded-t-2xl"
               />
 
-              <div className="mt-3">
+              {/* Content */}
+              <div className="p-4">
                 <h3 className="text-lg font-semibold">{fav.foodName}</h3>
                 <p className="text-gray-600 text-sm">{fav.restaurantName}</p>
-                <p className="text-gray-500 text-xs">
-                  {fav.restaurantLocation}
-                </p>
-                
-                <span className="badge badge-primary mt-2">
-                  {fav.rating} ★
-                </span>
+                <p className="text-gray-500 text-xs mb-2">{fav.restaurantLocation}</p>
+                <span className="badge badge-primary text-sm">{fav.rating} ★</span>
               </div>
             </div>
           ))}

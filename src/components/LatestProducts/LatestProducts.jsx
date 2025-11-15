@@ -6,7 +6,7 @@ const LatestProducts = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/products')
+    fetch('https://food-server-green.vercel.app/products')
       .then(res => res.json())
       .then(data => {
         const sortedData = data.sort((a, b) => b.rating - a.rating);
@@ -15,7 +15,7 @@ const LatestProducts = () => {
       .catch(err => console.error(err));
   }, []);
 
-  
+
   const top6 = products.slice(0, 6);
 
   return (

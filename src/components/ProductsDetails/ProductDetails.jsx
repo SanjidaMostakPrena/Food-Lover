@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router';
 
 const ProductDetails = () => {
   const product = useLoaderData();
-  console.log(product)
+  console.log(product);
 
   const popularRestaurants = [
     { name: "The Spice Hub", location: "Dhaka" },
@@ -13,12 +13,13 @@ const ProductDetails = () => {
 
   const relatedDishes = [
     { name: "Chowmein", photo: "https://i.ibb.co.com/602S8BLN/i.jpg" },
-    { name: "Lobster Carry", photo: "https://i.ibb.co.com/N6LKc5yW/delicious-lobster-gourmet-seafood.jpg" },
-    { name: "Beef Ball", photo: "https://i.ibb.co.com/RpNcmM0Z/tortilla-wrap-with-falafel-fresh-salad-vegan-tacos-vegetarian-healthy-food.jpg" },
+    { name: "Lobster Curry", photo: "https://i.ibb.co/N6LKc5yW/lobster-curry.jpg" },
+    { name: "Beef Ball", photo: "https://i.ibb.co/RpNcmM0Z/beef-ball.jpg" },
   ];
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4">
+      {/* Product Card */}
       <div className="max-w-5xl mx-auto mb-12">
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row transform transition-transform hover:scale-105 duration-300">
           <div className="md:w-1/2 relative">
@@ -34,21 +35,21 @@ const ProductDetails = () => {
           <div className="md:w-1/2 p-8 flex flex-col justify-between">
             <div>
               <h1 className="text-4xl font-extrabold text-gray-800 mb-4">{product.foodName}</h1>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-4">
                 <span className="font-semibold">Restaurant:</span> {product.restaurantName}
               </p>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-4">
                 <span className="font-semibold">Location:</span> {product.restaurantLocation}
               </p>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-4">
                 <span className="font-semibold">Reviewed by:</span> {product.reviewerName}
               </p>
             </div>
-          
           </div>
         </div>
       </div>
 
+      {/* Popular Restaurants */}
       <div className="max-w-5xl mx-auto mb-12">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">Popular Restaurants</h2>
         <div className="grid md:grid-cols-3 gap-6">
@@ -60,6 +61,8 @@ const ProductDetails = () => {
           ))}
         </div>
       </div>
+
+      {/* Related Dishes */}
       <div className="max-w-5xl mx-auto mb-12">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">You May Also Like</h2>
         <div className="grid md:grid-cols-3 gap-6">

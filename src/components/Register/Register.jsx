@@ -1,204 +1,203 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { useState, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Register = () => {
-  useEffect(() => {
-    document.title = "Register";
-  }, []);
-
-  const { createUser, signInWithGoogle, updateUserProfile } = useContext(AuthContext);
+  const { createUser, signInWithGoogle } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
-  const [email, setEmail] = useState('');
-  const [photoURL, setPhotoURL] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  const [passwordValid, setPasswordValid] = useState({
-    length: false,
-    uppercase: false,
-    lowercase: false,
-  });
-
-  const handlePasswordChange = (e) => {
-    const value = e.target.value;
-    setPassword(value);
-
-    setPasswordValid({
-      length: value.length >= 6,
-      uppercase: /[A-Z]/.test(value),
-      lowercase: /[a-z]/.test(value),
-    });
-  };
-
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    setError("");
+    setPasswordError("");
+    setLoading(true);
 
-    if (!passwordValid.length || !passwordValid.uppercase || !passwordValid.lowercase) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Weak Password',
-        text: 'Password must be at least 6 characters long and include both uppercase and lowercase letters.',
-      });
+    const name = e.target.name.value.trim();
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value.trim();
+    const confirmPassword = e.target.confirmPassword.value.trim();
+    const photoURL = e.target.photoURL.value.trim();
+
+    // Password validation
+    if (!/[A-Z]/.test(password)) {
+      setPasswordError("Password must include at least one uppercase letter.");
+      setLoading(false);
+      return;
+    }
+    if (!/[a-z]/.test(password)) {
+      setPasswordError("Password must include at least one lowercase letter.");
+      setLoading(false);
+      return;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      setPasswordError("Password must include at least one special character.");
+      setLoading(false);
+      return;
+    }
+    if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters long.");
+      setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Passwords do not match',
-        text: 'Please make sure both passwords are identical.',
-      });
+      toast.error("Passwords do not match!");
+      setLoading(false);
       return;
     }
 
-    createUser(email, password)
-      .then(result => {
-        updateUserProfile({ photoURL })
-          .then(() => {
-            const newUser = {
-              name: result.user.displayName || email.split('@')[0],
-              email,
-              image: photoURL,
-            };
-            fetch('http://localhost:3000/users', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(newUser),
-            }).then(() => navigate('/'));
-          });
-      })
-      .catch(error => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Registration Failed',
-          text: error.message,
-        });
+    try {
+      // 1️⃣ Create user with email/password in Firebase
+      const result = await createUser(email, password);
+
+      // 2️⃣ Save user to backend
+      const userData = {
+        name: name || email.split("@")[0],
+        email,
+        photoURL: photoURL || "",
+      };
+
+      const response = await fetch("https://food-server-green.vercel.app/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
       });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Failed to save user");
+
+      toast.success("Registration successful!");
+      e.target.reset();
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Registration failed. Try again.");
+      toast.error(err.message || "Registration failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then(result => {
-        const newUser = {
-          name: result.user.displayName,
-          email: result.user.email,
-          image: result.user.photoURL,
-        };
-        fetch('http://localhost:3000/users', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newUser),
-        }).then(() => navigate('/'));
-      })
-      .catch(error => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Google Sign In Failed',
-          text: error.message,
-        });
+  const handleGoogleSignIn = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const result = await signInWithGoogle();
+
+      // Save Google user to backend
+      const userData = {
+        name: result.user.displayName,
+        email: result.user.email,
+        photoURL: result.user.photoURL,
+      };
+
+      const response = await fetch("https://food-server-green.vercel.app/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
       });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Failed to save Google user");
+
+      toast.success("Google Sign-In successful!");
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Google Sign-In failed.");
+      toast.error(err.message || "Google Sign-In failed.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="card bg-base-100 w-full mx-auto max-w-sm shadow-2xl mt-20">
-      <h1 className="text-4xl font-bold text-center mt-4">Register now!</h1>
-      <form onSubmit={handleRegister} className="card-body" autoComplete="off">
-        <fieldset className="fieldset">
-          {/* Email */}
-          <label className="label">Email</label>
-          <input
-            type="email"
-            className="input"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email"
-            required
-          />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-yellow-50 via-orange-50 to-pink-50 px-4">
+      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div className="p-8 sm:p-10 md:p-12">
+          <Toaster />
+          <h1 className="text-4xl md:text-5xl font-extrabold text-center text-gray-800 mb-6">
+            Create Account
+          </h1>
+          <p className="text-center text-gray-600 mb-8">
+            Register now to discover the best local foods!
+          </p>
 
-          {/* Photo URL */}
-          <label className="label">Photo URL</label>
-          <input
-            type="text"
-            className="input"
-            placeholder="Photo URL"
-            value={photoURL}
-            onChange={(e) => setPhotoURL(e.target.value)}
-            autoComplete="off"
-            required
-          />
+          <form onSubmit={handleRegister} className="space-y-4">
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              required
+              className="input input-bordered w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+              className="input input-bordered w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+              className="input input-bordered w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+            />
+            {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm Password"
+              required
+              className="input input-bordered w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+            />
+            <input
+              type="text"
+              name="photoURL"
+              placeholder="Photo URL (optional)"
+              className="input input-bordered w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+            />
 
-          {/* Password */}
-          <label className="label">Password</label>
-          <input
-            type="password"
-            className="input"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            autoComplete="new-password"
-            required
-          />
+            {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          {/* Password validation */}
-          <ul className="text-sm mt-1 ml-2">
-            <li className={passwordValid.length ? 'text-green-600' : 'text-red-600'}>
-              {passwordValid.length ? '✔' : '✖'} At least 6 characters
-            </li>
-            <li className={passwordValid.uppercase ? 'text-green-600' : 'text-red-600'}>
-              {passwordValid.uppercase ? '✔' : '✖'} Contains uppercase letter
-            </li>
-            <li className={passwordValid.lowercase ? 'text-green-600' : 'text-red-600'}>
-              {passwordValid.lowercase ? '✔' : '✖'} Contains lowercase letter
-            </li>
-          </ul>
+            <button
+              type="submit"
+              className="btn btn-primary w-full mt-4 py-3 rounded-xl text-white bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 transition"
+              disabled={loading}
+            >
+              {loading ? "Registering..." : "Register"}
+            </button>
+          </form>
 
-          {/* Confirm Password */}
-          <label className="label">Confirm Password</label>
-          <input
-            type="password"
-            className="input"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            autoComplete="new-password"
-            required
-          />
-
-          <div className="mt-2">
-            <a className="link link-hover text-sm">Forgot password?</a>
+          <div className="flex items-center my-6">
+            <hr className="flex-grow border-gray-300" />
+            <span className="px-4 text-gray-400">OR</span>
+            <hr className="flex-grow border-gray-300" />
           </div>
 
-          {/* Submit button */}
           <button
-            type="submit"
-            className="btn btn-neutral mt-4 w-full"
+            onClick={handleGoogleSignIn}
+            className="btn w-full flex items-center justify-center py-3 rounded-xl border border-gray-300 hover:bg-gray-50 transition"
+            disabled={loading}
           >
-            Register
+            <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google" className="mr-2" />
+            {loading ? "Signing in..." : "Register with Google"}
           </button>
-        </fieldset>
 
-        {/* Google Sign-In */}
-        <button
-          type="button"
-          onClick={handleGoogleSignIn}
-          className="btn bg-white text-black border-[#e5e5e5] mt-4 flex items-center justify-center w-full"
-        >
-          <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="mr-2">
-            <g>
-              <path d="M0 0H512V512H0z" fill="#fff"></path>
-              <path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path>
-              <path fill="#4285f4" d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"></path>
-              <path fill="#fbbc02" d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"></path>
-              <path fill="#ea4335" d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"></path>
-            </g>
-          </svg>
-          Register with Google
-        </button>
-      </form>
+          <p className="text-center text-gray-600 text-sm mt-6">
+            Already have an account?{" "}
+            <a href="/login" className="text-yellow-600 font-semibold hover:underline">
+              Login
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

@@ -13,7 +13,7 @@ const AllFood = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/products")
+      .get("https://food-server-green.vercel.app/products")
       .then((res) => {
         const sorted = res.data.sort(
           (a, b) =>
@@ -32,21 +32,27 @@ const AllFood = () => {
   };
 
   if (loading)
-    return <p className="text-center mt-10 text-lg font-medium">Loading food...</p>;
+    return (
+      <p className="text-center mt-10 text-lg font-medium text-gray-700">
+        Loading food...
+      </p>
+    );
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      {/* Header with Image and Note */}
-      <div className="text-center mb-8">
-      
-        <h1 className="text-4xl font-bold mb-2">Welcome Food Lovers!</h1>
-        <p className="text-gray-700 text-lg">
-          Discover delicious dishes from your favorite local restaurants and enjoy the best culinary experiences.
+    <div className="max-w-7xl mx-auto p-4">
+      {/* Header */}
+      <div className="text-center mb-10">
+        <h1 className="text-4xl sm:text-5xl font-bold mb-3 text-gray-800">
+          Welcome Food Lovers!
+        </h1>
+        <p className="text-gray-600 text-lg sm:text-xl max-w-2xl mx-auto">
+          Discover delicious dishes from your favorite local restaurants and enjoy
+          the best culinary experiences.
         </p>
       </div>
 
       {/* Food Cards */}
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
         {reviews.map((review) => {
           const {
             _id,
@@ -63,11 +69,12 @@ const AllFood = () => {
           return (
             <div
               key={_id}
-              className="card bg-base-100 shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-shadow relative"
+              className="relative bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
             >
+              {/* Favorite Heart Button */}
               <button
                 onClick={() => toggleFavorite(_id)}
-                className={`absolute top-2 right-2 text-2xl transition-transform duration-200 hover:scale-125 ${
+                className={`absolute -top-3 right-3 z-20 text-3xl p-2 rounded-full shadow-lg bg-white hover:scale-125 transition-all duration-300 ${
                   isFavorite ? "text-red-500" : "text-gray-400"
                 }`}
               >
@@ -75,36 +82,36 @@ const AllFood = () => {
               </button>
 
               {/* Food Image */}
-              <figure className="h-48 sm:h-56 md:h-64 overflow-hidden">
+              <figure className="h-56 sm:h-64 overflow-hidden">
                 <img
                   src={photo}
                   alt={foodName}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
               </figure>
 
               {/* Card Body */}
-              <div className="card-body p-4">
-                <h2 className="card-title text-lg sm:text-xl font-semibold">
+              <div className="p-5">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
                   {foodName}
                 </h2>
-                <p className="text-gray-600 text-sm sm:text-base">
+                <p className="text-gray-600 mt-1 text-sm sm:text-base">
                   {restaurantName} — {restaurantLocation}
                 </p>
 
-                <div className="flex items-center justify-between mt-2">
+                <div className="flex items-center justify-between mt-3">
                   <span className="font-medium text-sm sm:text-base">
                     {reviewerName}
                   </span>
-                  <span className="badge badge-primary text-sm sm:text-base">
-                    {rating} ★
+                  <span className="px-3 py-1 bg-yellow-400 text-gray-900 rounded-full text-sm font-semibold shadow-sm">
+                    ★ {rating}
                   </span>
                 </div>
 
-                <div className="card-actions justify-center mt-4 text-center">
+                <div className="mt-4 text-center">
                   <Link
                     to={`/ProductDetails/${_id}`}
-                    className="btn btn-sm btn-outline btn-primary w-1/2 sm:w-5/12"
+                    className="btn btn-outline btn-primary w-1/2 sm:w-5/12 mx-auto"
                   >
                     Food Details
                   </Link>

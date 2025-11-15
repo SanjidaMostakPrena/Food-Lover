@@ -17,17 +17,16 @@ const Skeleton = () => (
 );
 
 // Main Component
-const  DataFetching = () => {
+const DataFetching = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showSpinner, setShowSpinner] = useState(false);
 
   useEffect(() => {
-    // Show spinner if loading takes longer than 1s
     const timer = setTimeout(() => setShowSpinner(true), 1000);
 
     axios
-      .get("http://localhost:3000/reviews") // Replace with your backend endpoint
+      .get("https://food-server-green.vercel.app/reviews") 
       .then((res) => setReviews(res.data))
       .catch((err) => console.error(err))
       .finally(() => {
