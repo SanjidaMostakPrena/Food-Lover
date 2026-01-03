@@ -3,6 +3,7 @@ import LatestProducts from '../LatestProducts/LatestProducts.jsx';
 import Banner from '../Banner/Banner.jsx';
 import LocalFoodTips from '../LocalFoodTips/LocalFoodTips.jsx';
 import TopLocalDishes from '../TopLocalDishes/TopLocalDishes.jsx';
+import LocalFoodPage from '../LocalFoodPage/LocalFoodPage.jsx';
 const LatestProductsPromise = fetch('https://food-server-green.vercel.app/latestproducts').
   then(res => res.json());
 const Home = () => {
@@ -16,6 +17,7 @@ const Home = () => {
       <LatestProducts testProductsPromise={LatestProductsPromise}></LatestProducts>
       <TopLocalDishes />
       <LocalFoodTips />
+      <LocalFoodPage></LocalFoodPage>
     </div>
   );
 };

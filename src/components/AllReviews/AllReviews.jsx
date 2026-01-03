@@ -135,13 +135,13 @@ const AllReviews = () => {
           <table className="min-w-full table-auto text-left divide-y divide-gray-200 text-xs sm:text-sm">
             <thead className="bg-yellow-50">
               <tr>
-                <th className="px-1 sm:px-2 py-1 sm:py-2">Img</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2">Image</th>
                 <th className="px-1 sm:px-2 py-1 sm:py-2">Food</th>
                 <th className="px-1 sm:px-2 py-1 sm:py-2">Restaurant</th>
                 <th className="px-1 sm:px-2 py-1 sm:py-2">Reviewer</th>
                 <th className="px-1 sm:px-2 py-1 sm:py-2 text-center">Rating</th>
                 <th className="px-1 sm:px-2 py-1 sm:py-2">Review</th>
-                <th className="px-1 sm:px-2 py-1 sm:py-2 text-center">Fav</th>
+                <th className="px-1 sm:px-2 py-1 sm:py-2 text-center">Favorite</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
