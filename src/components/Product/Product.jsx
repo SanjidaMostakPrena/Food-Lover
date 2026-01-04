@@ -55,8 +55,8 @@ const Product = ({ product }) => {
 
   if (loading) {
     return (
-      <div className="flex w-52 flex-col gap-4 mx-auto">
-        <div className="skeleton h-32 w-full rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+      <div className="flex flex-col gap-4 w-full max-w-sm mx-auto">
+        <div className="skeleton h-48 w-full rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
         <div className="skeleton h-4 w-28 rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
         <div className="skeleton h-4 w-full rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
         <div className="skeleton h-4 w-full rounded bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
@@ -65,8 +65,8 @@ const Product = ({ product }) => {
   }
 
   return (
-    <div className="relative w-full sm:w-80 md:w-96 mx-auto">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300">
+    <div className="w-full max-w-sm mx-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col h-full">
         <figure className="h-48 sm:h-56 md:h-64 overflow-hidden">
           <img
             src={photo}
@@ -75,8 +75,8 @@ const Product = ({ product }) => {
           />
         </figure>
 
-        <div className="p-5">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-1">{foodName}</h2>
+        <div className="p-5 flex flex-col flex-1">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-1 truncate">{foodName}</h2>
 
           <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base mb-3">
             <span className="font-medium">{restaurantName}</span>
