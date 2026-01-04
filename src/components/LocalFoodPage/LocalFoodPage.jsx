@@ -91,7 +91,7 @@ const LocalFoodPage = () => {
             <div key={faq.id} className="mb-4 border rounded-2xl overflow-hidden shadow hover:shadow-lg transition border-gray-200">
               <button
                 onClick={() => toggleFaq(faq.id)}
-                className="w-full text-left px-6 py-4 bg-orange-500 text-white flex justify-between items-center font-medium hover:bg-orange-600 transition"
+                className="w-full text-left px-6 py-4 bg-yellow-500 text-white flex justify-between items-center font-medium hover:bg-yellow-600 transition"
               >
                 {faq.q}
                 <span className="text-xl">{faqOpen === faq.id ? "−" : "+"}</span>
@@ -115,12 +115,12 @@ const LocalFoodPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Your email"
-              className="px-4 py-3 rounded-full flex-1 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="px-4 py-3 rounded-full flex-1 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
               required
             />
             <button
               type="submit"
-              className="px-6 py-3 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transition"
+              className="px-6 py-3 bg-yellow-500 text-white rounded-full font-semibold hover:bg-yellow-600 transition"
             >
               Subscribe
             </button>
@@ -147,22 +147,22 @@ const LocalFoodPage = () => {
     </svg>
   </div>
 
-  <h2 className="text-4xl sm:text-5xl font-extrabold mb-6 tracking-tight">
+  <h2 className="text-3xl sm:text-3xl font-bold mb-6 tracking-tight">
     Ready to Taste Local Delights?
   </h2>
   <p className="text-lg sm:text-xl mb-12 max-w-xl mx-auto leading-relaxed text-gray-700">
-    Order now and enjoy <strong className="text-orange-500">fresh, authentic homemade meals</strong> delivered fast!
+    Order now and enjoy <strong className="text-yellow-500">fresh, authentic homemade meals</strong> delivered fast!
   </p>
 
   <div className="flex justify-center gap-6 flex-wrap">
     <Link
-  to="/orderPage" className="px-8 py-4 bg-orange-500 text-white font-bold rounded-full shadow-xl transform transition duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-orange-600">
+  to="/orderPage" className="px-8 py-4 bg-yellow-500 text-white font-bold rounded-full shadow-xl transform transition duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-yellow-600">
       Customer Review
     </Link>
    
 <Link
   to="/contact"
-  className="px-8 py-4 bg-white text-orange-500 font-bold rounded-full shadow-lg border border-orange-500 transform transition duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-orange-100 inline-block text-center"
+  className="px-8 py-4 bg-white text-yellow-500 font-bold rounded-full shadow-lg border border-yellow-500 transform transition duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-yellow-100 inline-block text-center"
 >
   Contact Us
 </Link>

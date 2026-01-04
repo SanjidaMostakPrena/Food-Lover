@@ -204,6 +204,190 @@
 // };
 
 // export default Register;
+// import { useState, useContext } from "react";
+// import { AuthContext } from "../../contexts/AuthContext";
+// import { useNavigate } from "react-router-dom";
+// import toast, { Toaster } from "react-hot-toast";
+
+// const Register = () => {
+//   const { createUser, signInWithGoogle } = useContext(AuthContext);
+//   const navigate = useNavigate();
+//   const [error, setError] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const [passwordError, setPasswordError] = useState("");
+
+//   const handleRegister = async (e) => {
+//     e.preventDefault();
+//     setError("");
+//     setPasswordError("");
+//     setLoading(true);
+
+//     const name = e.target.name.value.trim();
+//     const email = e.target.email.value.trim();
+//     const password = e.target.password.value.trim();
+//     const confirmPassword = e.target.confirmPassword.value.trim();
+//     const photoURL = e.target.photoURL.value.trim();
+
+//     if (!/[A-Z]/.test(password)) {
+//       setPasswordError("Password must include at least one uppercase letter.");
+//       setLoading(false);
+//       return;
+//     }
+//     if (!/[a-z]/.test(password)) {
+//       setPasswordError("Password must include at least one lowercase letter.");
+//       setLoading(false);
+//       return;
+//     }
+//     if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
+//       setPasswordError("Password must include at least one special character.");
+//       setLoading(false);
+//       return;
+//     }
+//     if (password.length < 6) {
+//       setPasswordError("Password must be at least 6 characters long.");
+//       setLoading(false);
+//       return;
+//     }
+
+//     if (password !== confirmPassword) {
+//       toast.error("Passwords do not match!");
+//       setLoading(false);
+//       return;
+//     }
+
+//     try {
+//       await createUser(email, password);
+
+//       // ✅ role added
+//       const userData = {
+//         name: name || email.split("@")[0],
+//         email,
+//         photoURL: photoURL || "",
+//         role: "user",
+//       };
+
+//       const response = await fetch("https://food-server-green.vercel.app/users", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(userData),
+//       });
+
+//       const data = await response.json();
+//       if (!response.ok) throw new Error(data.message || "Failed to save user");
+
+//       toast.success("Registration successful!");
+//       e.target.reset();
+
+//       setTimeout(() => navigate("/"), 800);
+
+//     } catch (err) {
+//       setError(err.message || "Registration failed. Try again.");
+//       toast.error(err.message || "Registration failed. Try again.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleGoogleSignIn = async () => {
+//     setError("");
+//     setLoading(true);
+
+//     try {
+//       const result = await signInWithGoogle();
+
+//       // ✅ role added
+//       const userData = {
+//         name: result.user.displayName,
+//         email: result.user.email,
+//         photoURL: result.user.photoURL,
+//         role: "user",
+//       };
+
+//       const response = await fetch("https://food-server-green.vercel.app/users", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(userData),
+//       });
+
+//       const data = await response.json();
+//       if (!response.ok) throw new Error(data.message || "Failed to save Google user");
+
+//       toast.success("Google Sign-In successful!");
+//       setTimeout(() => navigate("/"), 800);
+
+//     } catch (err) {
+//       setError(err.message || "Google Sign-In failed.");
+//       toast.error(err.message || "Google Sign-In failed.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-yellow-50 via-orange-50 to-pink-50 px-4">
+//       <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
+//         <div className="p-8 sm:p-10 md:p-12">
+//           <Toaster />
+
+//           <h1 className="text-4xl md:text-5xl font-extrabold text-center text-gray-800 mb-6">
+//             Create Account
+//           </h1>
+//           <p className="text-center text-gray-600 mb-8">
+//             Register now to discover the best local foods!
+//           </p>
+
+//           <form onSubmit={handleRegister} className="space-y-4">
+//             <input type="text" name="name" placeholder="Full Name" required
+//               className="input input-bordered w-full rounded-xl" />
+
+//             <input type="email" name="email" placeholder="Email" required
+//               className="input input-bordered w-full rounded-xl" />
+
+//             <input type="password" name="password" placeholder="Password" required
+//               className="input input-bordered w-full rounded-xl" />
+
+//             {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
+
+//             <input type="password" name="confirmPassword" placeholder="Confirm Password" required
+//               className="input input-bordered w-full rounded-xl" />
+
+//             <input type="text" name="photoURL" placeholder="Photo URL (optional)"
+//               className="input input-bordered w-full rounded-xl" />
+
+//             {error && <p className="text-red-500 text-sm">{error}</p>}
+
+//             <button type="submit" disabled={loading}
+//               className="btn btn-primary w-full mt-4 py-3 rounded-xl">
+//               {loading ? "Registering..." : "Register"}
+//             </button>
+//           </form>
+
+//           <div className="flex items-center my-6">
+//             <hr className="flex-grow border-gray-300" />
+//             <span className="px-4 text-gray-400">OR</span>
+//             <hr className="flex-grow border-gray-300" />
+//           </div>
+
+//           <button onClick={handleGoogleSignIn} disabled={loading}
+//             className="btn w-full flex items-center justify-center py-3 rounded-xl border">
+//             <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google" className="mr-2" />
+//             {loading ? "Signing in..." : "Register with Google"}
+//           </button>
+
+//           <p className="text-center text-gray-600 text-sm mt-6">
+//             Already have an account?{" "}
+//             <a href="/login" className="text-yellow-600 font-semibold hover:underline">
+//               Login
+//             </a>
+//           </p>
+
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Register;
 import { useState, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -258,7 +442,6 @@ const Register = () => {
     try {
       await createUser(email, password);
 
-      // ✅ role added
       const userData = {
         name: name || email.split("@")[0],
         email,
@@ -295,7 +478,6 @@ const Register = () => {
     try {
       const result = await signInWithGoogle();
 
-      // ✅ role added
       const userData = {
         name: result.user.displayName,
         email: result.user.email,
@@ -324,59 +506,59 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-yellow-50 via-orange-50 to-pink-50 px-4">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
-        <div className="p-8 sm:p-10 md:p-12">
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 px-4 py-10 text-black dark:text-white">
+      <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col gap-4">
           <Toaster />
 
-          <h1 className="text-4xl md:text-5xl font-extrabold text-center text-gray-800 mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center text-black dark:text-white mb-4 md:mb-6">
             Create Account
           </h1>
-          <p className="text-center text-gray-600 mb-8">
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-6 md:mb-8 text-sm sm:text-base">
             Register now to discover the best local foods!
           </p>
 
-          <form onSubmit={handleRegister} className="space-y-4">
+          <form onSubmit={handleRegister} className="flex flex-col gap-4 w-full">
             <input type="text" name="name" placeholder="Full Name" required
-              className="input input-bordered w-full rounded-xl" />
+              className="w-full p-3 border rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
 
             <input type="email" name="email" placeholder="Email" required
-              className="input input-bordered w-full rounded-xl" />
+              className="w-full p-3 border rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
 
             <input type="password" name="password" placeholder="Password" required
-              className="input input-bordered w-full rounded-xl" />
+              className="w-full p-3 border rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
 
             {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
 
             <input type="password" name="confirmPassword" placeholder="Confirm Password" required
-              className="input input-bordered w-full rounded-xl" />
+              className="w-full p-3 border rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
 
             <input type="text" name="photoURL" placeholder="Photo URL (optional)"
-              className="input input-bordered w-full rounded-xl" />
+              className="w-full p-3 border rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
 
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <button type="submit" disabled={loading}
-              className="btn btn-primary w-full mt-4 py-3 rounded-xl">
+              className="w-full mt-4 py-3 rounded-xl bg-yellow-500 text-black dark:text-black hover:bg-yellow-400 transition font-semibold">
               {loading ? "Registering..." : "Register"}
             </button>
           </form>
 
-          <div className="flex items-center my-6">
-            <hr className="flex-grow border-gray-300" />
-            <span className="px-4 text-gray-400">OR</span>
-            <hr className="flex-grow border-gray-300" />
+          <div className="flex items-center my-4 md:my-6 gap-2">
+            <hr className="flex-grow border-gray-300 dark:border-gray-600" />
+            <span className="px-2 text-gray-400 dark:text-gray-500 text-sm md:text-base">OR</span>
+            <hr className="flex-grow border-gray-300 dark:border-gray-600" />
           </div>
 
           <button onClick={handleGoogleSignIn} disabled={loading}
-            className="btn w-full flex items-center justify-center py-3 rounded-xl border">
+            className="w-full flex items-center justify-center py-3 rounded-xl bg-yellow-500 text-black dark:text-black hover:bg-yellow-400 transition font-semibold border border-yellow-500 gap-2">
             <img src="https://img.icons8.com/color/24/google-logo.png" alt="Google" className="mr-2" />
             {loading ? "Signing in..." : "Register with Google"}
           </button>
 
-          <p className="text-center text-gray-600 text-sm mt-6">
-            Already have an account?{" "}
-            <a href="/login" className="text-yellow-600 font-semibold hover:underline">
+          <p className="text-center text-gray-600 dark:text-gray-300 text-sm mt-4 md:mt-6">
+            Already have an account?{' '}
+            <a href="/login" className="text-yellow-500 font-semibold hover:underline">
               Login
             </a>
           </p>

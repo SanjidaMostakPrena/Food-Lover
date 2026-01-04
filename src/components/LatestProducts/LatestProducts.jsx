@@ -19,7 +19,7 @@ const LatestProducts = () => {
   const top6 = products.slice(0, 6);
 
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {top6.map(product => (
           <Product key={product._id} product={product} />
@@ -28,7 +28,7 @@ const LatestProducts = () => {
       <div className="flex justify-center mt-6">
         <Link
           to="/AllReviews"
-          className="btn btn-outline btn-primary"
+          className="btn btn-outline bg-yellow-500"
         >
           Show All
         </Link>

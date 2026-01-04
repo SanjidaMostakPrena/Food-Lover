@@ -177,7 +177,7 @@ const Banner = () => {
   ];
 
   return (
-    <div className="relative w-full h-[70vh] lg:h-[75vh] xl:h-[80vh] overflow-hidden">
+    <div className="relative  w-full h-[70vh] lg:h-[75vh] xl:h-[80vh] overflow-hidden">
       <Slider {...settings}>
         {slides.map((slide, index) => (
           <div key={index} className="relative h-full w-full">
