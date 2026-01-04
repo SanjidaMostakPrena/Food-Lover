@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 
-// Sample reviews data
+
 const reviews = [
   {
     reviewerName: "Nusrat Jahan",

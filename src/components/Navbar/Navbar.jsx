@@ -1,952 +1,4 @@
-// import { NavLink } from "react-router-dom";
-// import { useContext, useState } from "react";
-// import { AuthContext } from "../../contexts/AuthContext";
-// import { motion } from "framer-motion";
 
-// const Navbar = () => {
-//   const { user, signOutUser } = useContext(AuthContext);
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   const links = (
-//     <>
-//       <li>
-//         <NavLink
-//           to="/"
-//           className={({ isActive }) =>
-//             isActive
-//               ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1"
-//               : "hover:text-yellow-300 transition"
-//           }
-//         >
-//           Home
-//         </NavLink>
-//       </li>
-
-//       <li>
-//         <NavLink
-//           to="/AllReviews"
-//           className={({ isActive }) =>
-//             isActive
-//               ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1"
-//               : "hover:text-yellow-300 transition"
-//           }
-//         >
-//           AllReviews
-//         </NavLink>
-//       </li>
-
-//       {user && (
-//         <>
-//           <li>
-//             <NavLink
-//               to="/allFood"
-//               className={({ isActive }) =>
-//                 isActive
-//                   ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1"
-//                   : "hover:text-yellow-300 transition"
-//               }
-//             >
-//               All Food
-//             </NavLink>
-//           </li>
-
-//           <li>
-//             <NavLink
-//               to="/AddReview"
-//               className={({ isActive }) =>
-//                 isActive
-//                   ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1"
-//                   : "hover:text-yellow-300 transition"
-//               }
-//             >
-//               Add Review
-//             </NavLink>
-//           </li>
-
-//           <li>
-//             <NavLink
-//               to="/MyReview"
-//               className={({ isActive }) =>
-//                 isActive
-//                   ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1"
-//                   : "hover:text-yellow-300 transition"
-//               }
-//             >
-//               My Review
-//             </NavLink>
-//           </li>
-
-//           <li>
-//             <NavLink
-//               to="/myFavorites"
-//               className={({ isActive }) =>
-//                 isActive
-//                   ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1"
-//                   : "hover:text-yellow-300 transition"
-//               }
-//             >
-//               My Favorites
-//             </NavLink>
-//           </li>
-//         </>
-//       )}
-//     </>
-//   );
-
-//   return (
-//     <div
-//       className="
-//         navbar sticky top-0 z-50 px-3 md:px-6 lg:px-16
-//         bg-gradient-to-r from-[#020617]/90 via-[#0f172a]/80 to-[#1e293b]/90
-//         backdrop-blur-lg shadow-xl border-b border-gray-700/40
-//       "
-//     >
-//       {/* Navbar Start */}
-//       <div className="navbar-start">
-        
-//         {/* Mobile Dropdown */}
-//         <div className="dropdown lg:hidden">
-//           <label tabIndex={0} className="btn btn-ghost btn-circle hover:bg-gray-700/40">
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               className="h-6 w-6 text-gray-200"
-//               fill="none"
-//               viewBox="0 0 24 24"
-//               stroke="currentColor"
-//             >
-//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-//             </svg>
-//           </label>
-
-//           <ul
-//             tabIndex={0}
-//             className="
-//               menu menu-sm dropdown-content mt-3 p-3 
-//               shadow-xl bg-[#0f172a] text-white rounded-xl w-52
-//               border border-gray-700 space-y-1
-//             "
-//           >
-//             {links}
-//           </ul>
-//         </div>
-
-//         {/* Logo */}
-//         <NavLink to="/" className="flex items-center">
-//           <motion.img
-//             initial={{ opacity: 0, scale: 0.7 }}
-//             animate={{ opacity: 1, scale: 1 }}
-//             transition={{ duration: 0.6, ease: 'easeOut' }}
-//             src="https://i.ibb.co.com/ch3r5JTs/Untitled-design-1.png"
-//             alt="Local Food Lover Logo"
-//             className="w-20 h-14 md:w-36 md:h-18 rounded-full object-cover drop-shadow-2xl"
-//           />
-//         </NavLink>
-//       </div>
-
-      
-//       <div className="navbar-center hidden lg:flex">
-//         <ul className="menu menu-horizontal px-1 gap-6 text-lg font-medium text-gray-200">
-//           {links}
-//         </ul>
-//       </div>
-
-//       <div className="navbar-end flex items-center gap-2 md:gap-3">
-//         {user ? (
-//           <div className="relative">
-//             <div
-//               className="cursor-pointer flex items-center"
-//               onClick={() => setIsOpen(!isOpen)}
-//             >
-//               <img
-//                 src={user.photoURL || "/default-avatar.png"}
-//                 alt="User"
-//                 className="w-9 h-9 md:w-11 md:h-11 rounded-full border-2 border-yellow-400 object-cover shadow-lg hover:scale-105 transition"
-//               />
-//             </div>
-
-//             {isOpen && (
-//               <ul
-//                 className="
-//                   absolute right-0 mt-3 w-36 md:w-40 
-//                   bg-[#0f172a] text-white rounded-xl 
-//                   shadow-xl border border-gray-700
-//                 "
-//               >
-//                 <li className="border-b border-gray-600">
-//                   <button
-//                     onClick={() => {
-//                       signOutUser();
-//                       setIsOpen(false);
-//                     }}
-//                     className="block w-full text-left px-4 py-2 text-sm hover:bg-yellow-500 hover:text-black transition"
-//                   >
-//                     Logout
-//                   </button>
-//                 </li>
-
-//                 <li className="border-b border-gray-600">
-//                   <NavLink
-//                     to="AddReview"
-//                     onClick={() => setIsOpen(false)}
-//                     className="block w-full text-left px-4 py-2 text-sm hover:bg-yellow-500 hover:text-black transition"
-//                   >
-//                     Add Review
-//                   </NavLink>
-
-//                   <NavLink
-//                     to="AllReviews"
-//                     onClick={() => setIsOpen(false)}
-//                     className="block w-full text-left px-4 py-2 text-sm hover:bg-yellow-500 hover:text-black transition"
-//                   >
-//                     All Reviews
-//                   </NavLink>
-//                 </li>
-//               </ul>
-//             )}
-//           </div>
-//         ) : (
-//           <>
-//             <NavLink
-//               to="/register"
-//               className="btn btn-outline border-yellow-400 text-yellow-300 rounded-full px-4 md:px-6 font-semibold hover:bg-yellow-400 hover:text-black transition"
-//             >
-//               Register
-//             </NavLink>
-
-//             <NavLink
-//               to="/login"
-//               className="btn bg-yellow-400 text-black rounded-full px-4 md:px-6 font-semibold shadow-lg hover:bg-yellow-300 transition"
-//             >
-//               Login
-//             </NavLink>
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-// import { NavLink, useNavigate } from "react-router-dom";
-// import { useContext, useState } from "react";
-// import { AuthContext } from "../../contexts/AuthContext";
-// import { motion } from "framer-motion";
-
-// const Navbar = () => {
-//   const { user, signOutUser } = useContext(AuthContext);
-//   const [isOpen, setIsOpen] = useState(false);
-//   const navigate = useNavigate();
-
-//   // 🔐 Route Guard Handler
-//   const handleProtectedNav = (path) => {
-//     if (!user) {
-//       navigate("/login");
-//     } else {
-//       navigate(path);
-//     }
-//   };
-
-//   const linkClass = ({ isActive }) =>
-//     isActive
-//       ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1"
-//       : "hover:text-yellow-300 transition";
-
-//   return (
-//     <div className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#1e293b] shadow-xl">
-//       <div className="navbar px-4 md:px-8 lg:px-16 text-white">
-
-//         {/* LEFT */}
-//         <div className="navbar-start">
-//           {/* Mobile Menu */}
-//           <div className="dropdown lg:hidden">
-//             <label tabIndex={0} className="btn btn-ghost">☰</label>
-//             <ul className="menu menu-sm dropdown-content mt-3 p-3 bg-[#0f172a] rounded-xl w-56 shadow border border-gray-700 space-y-1">
-//               {/* Public */}
-//               <li><NavLink to="/" className={linkClass}>Home</NavLink></li>
-//               <li><NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink></li>
-//               <li><NavLink to="/about" className={linkClass}>About Us</NavLink></li>
-//               <li><NavLink to="/contact" className={linkClass}>Contact Us</NavLink></li>
-//               <li><NavLink to="/privacy" className={linkClass}>Privacy Policy</NavLink></li>
-
-//               {/* Protected */}
-//               <li onClick={() => handleProtectedNav("/allFood")} className="cursor-pointer hover:text-yellow-300">
-//                 All Food
-//               </li>
-//               <li onClick={() => handleProtectedNav("/AddReview")} className="cursor-pointer hover:text-yellow-300">
-//                 Add Review
-//               </li>
-//               <li onClick={() => handleProtectedNav("/MyReview")} className="cursor-pointer hover:text-yellow-300">
-//                 My Review
-//               </li>
-//               <li onClick={() => handleProtectedNav("/myFavorites")} className="cursor-pointer hover:text-yellow-300">
-//                 My Favorites
-//               </li>
-//             </ul>
-//           </div>
-
-//           {/* Logo */}
-//           <NavLink to="/">
-//   <motion.div
-//     className="flex items-center gap-2  p-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-//     initial={{ scale: 0.8, opacity: 0 }}
-//     animate={{ scale: 1, opacity: 1 }}
-//     transition={{ duration: 0.6, type: "spring", stiffness: 130 }}
-//   >
-   
-//     {/* Food Emoji */}
-//     <span className="text-yellow-400 text-2xl md:text-3xl animate-bounce">🍽️ </span>
-
-//     {/* Logo Text */}
-//     <span className="text-white font-extrabold text-lg md:text-2xl tracking-wider">
-//       Yum
-//       <span className="text-yellow-400">Yard</span>
-//     </span>
-//   </motion.div>
-// </NavLink>
-
-//         </div>
-
-//         {/* CENTER */}
-//         <div className="navbar-center hidden lg:flex">
-//           <ul className="menu menu-horizontal gap-6 font-medium">
-//             {/* Public */}
-//             <NavLink to="/" className={linkClass}>Home</NavLink>
-//             <NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink>
-//             <NavLink to="/about" className={linkClass}>About Us</NavLink>
-//             <NavLink to="/contact" className={linkClass}>Contact Us</NavLink>
-//             <NavLink to="/privacy" className={linkClass}>Privacy Policy</NavLink>
-
-//             {/* Protected */}
-//             <button onClick={() => handleProtectedNav("/allFood")} className="hover:text-yellow-300">
-//               All Food
-//             </button>
-//             <button onClick={() => handleProtectedNav("/AddReview")} className="hover:text-yellow-300">
-//               Add Review
-//             </button>
-//             <button onClick={() => handleProtectedNav("/MyReview")} className="hover:text-yellow-300">
-//               My Review
-//             </button>
-//             <button onClick={() => handleProtectedNav("/myFavorites")} className="hover:text-yellow-300">
-//               My Favorites
-//             </button>
-//           </ul>
-//         </div>
-
-//         {/* RIGHT */}
-//         <div className="navbar-end gap-3">
-//           {user ? (
-//             <div className="relative">
-//               <img
-//                 src={user.photoURL || "/default-avatar.png"}
-//                 onClick={() => setIsOpen(!isOpen)}
-//                 className="w-10 h-10 rounded-full border-2 border-yellow-400 cursor-pointer"
-//               />
-
-//               {isOpen && (
-//                 <ul className="absolute right-0 mt-3 w-44 bg-[#0f172a] rounded-xl shadow border border-gray-700">
-//                   <li>
-//                     <NavLink to="/dashboard" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">
-//                       Dashboard
-//                     </NavLink>
-//                   </li>
-//                   <li>
-//                     <button
-//                       onClick={signOutUser}
-//                       className="w-full text-left px-4 py-2 hover:bg-red-500"
-//                     >
-//                       Logout
-//                     </button>
-//                   </li>
-//                 </ul>
-//               )}
-//             </div>
-//           ) : (
-//             <>
-//               <NavLink to="/register" className="btn btn-outline border-yellow-400 text-yellow-400">
-//                 Register
-//               </NavLink>
-//               <NavLink to="/login" className="btn bg-yellow-400 text-black">
-//                 Login
-//               </NavLink>
-//             </>
-//           )}
-//         </div>
-
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-// import { NavLink, useNavigate } from "react-router-dom";
-// import { useContext, useState } from "react";
-// import { AuthContext } from "../../contexts/AuthContext";
-// import { motion } from "framer-motion";
-
-// const Navbar = () => {
-//   const { user, signOutUser } = useContext(AuthContext);
-//   const [isOpen, setIsOpen] = useState(false);
-//   const navigate = useNavigate();
-
-//   // 🔐 Route Guard Handler
-//   const handleProtectedNav = (path) => {
-//     if (!user) {
-//       navigate("/login");
-//     } else {
-//       navigate(path);
-//     }
-//   };
-
-//   const linkClass = ({ isActive }) =>
-//     isActive
-//       ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1 transition-all"
-//       : "text-white hover:text-yellow-300 transition-all";
-
-//   return (
-//     <div className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#1e293b] shadow-xl">
-//       <div className="navbar px-4 md:px-8 lg:px-16 text-white flex justify-between items-center">
-
-//         {/* LOGO */}
-//         <NavLink to="/">
-//           <motion.div
-//             className="flex items-center gap-2 p-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-//             initial={{ scale: 0.8, opacity: 0 }}
-//             animate={{ scale: 1, opacity: 1 }}
-//             transition={{ duration: 0.6, type: "spring", stiffness: 130 }}
-//           >
-//             <span className="text-yellow-400 text-2xl md:text-3xl animate-bounce">🍽️</span>
-//             <span className="text-white font-extrabold text-lg md:text-2xl tracking-wider">
-//               Yum<span className="text-yellow-400">Yard</span>
-//             </span>
-//           </motion.div>
-//         </NavLink>
-
-//         {/* DESKTOP LINKS */}
-//         <div className="hidden lg:flex gap-6 font-medium items-center">
-//           <NavLink to="/" className={linkClass}>Home</NavLink>
-//           <NavLink to="/about" className={linkClass}>About Us</NavLink>
-//           <button onClick={() => handleProtectedNav("/allFood")} className="text-white hover:text-yellow-300 transition">All Food</button>
-//           <NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink>
-//           <button onClick={() => handleProtectedNav("/AddReview")} className="text-white hover:text-yellow-300 transition">Add Review</button>
-//           <button onClick={() => handleProtectedNav("/MyReview")} className="text-white hover:text-yellow-300 transition">My Review</button>
-//           <button onClick={() => handleProtectedNav("/myFavorites")} className="text-white hover:text-yellow-300 transition">My Favorites</button>
-//           <NavLink to="/contact" className={linkClass}>Contact Us</NavLink>
-//           <NavLink to="/privacy" className={linkClass}>Privacy Policy</NavLink>
-//           <NavLink to="/profile" className={linkClass}>Profile</NavLink>
-//         </div>
-
-//         {/* USER / AUTH */}
-//         <div className="flex items-center gap-3">
-//           {user ? (
-//             <div className="relative">
-//               <img
-//                 src={user.photoURL || "/default-avatar.png"}
-//                 onClick={() => setIsOpen(!isOpen)}
-//                 className="w-10 h-10 rounded-full border-2 border-yellow-400 cursor-pointer"
-//               />
-//               {isOpen && (
-//                 <ul className="absolute right-0 mt-3 w-44 bg-[#0f172a] rounded-xl shadow border border-gray-700">
-//                   <li>
-//                     <NavLink to="/dashboard" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">Dashboard</NavLink>
-//                   </li>
-//                   <li>
-//                     <button
-//                       onClick={signOutUser}
-//                       className="w-full text-left px-4 py-2 hover:bg-red-500"
-//                     >
-//                       Logout
-//                     </button>
-//                   </li>
-//                 </ul>
-//               )}
-//             </div>
-//           ) : (
-//             <>
-//               <NavLink to="/register" className="px-4 py-2 border border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-//                 Register
-//               </NavLink>
-//               <NavLink to="/login" className="px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition">
-//                 Login
-//               </NavLink>
-//             </>
-//           )}
-//         </div>
-
-//         {/* MOBILE MENU */}
-//         <div className="lg:hidden dropdown">
-//           <label tabIndex={0} className="btn btn-ghost text-white text-2xl">☰</label>
-//           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 p-3 bg-[#0f172a] rounded-xl w-56 shadow border border-gray-700 space-y-1">
-//             <li><NavLink to="/" className={linkClass}>Home</NavLink></li>
-//             <li><NavLink to="/about" className={linkClass}>About Us</NavLink></li>
-//             <li onClick={() => handleProtectedNav("/allFood")} className="cursor-pointer hover:text-yellow-300">All Food</li>
-//             <li><NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink></li>
-//             <li onClick={() => handleProtectedNav("/AddReview")} className="cursor-pointer hover:text-yellow-300">Add Review</li>
-//             <li onClick={() => handleProtectedNav("/MyReview")} className="cursor-pointer hover:text-yellow-300">My Review</li>
-//             <li onClick={() => handleProtectedNav("/myFavorites")} className="cursor-pointer hover:text-yellow-300">My Favorites</li>
-//             <li><NavLink to="/contact" className={linkClass}>Contact Us</NavLink></li>
-//             <li><NavLink to="/privacy" className={linkClass}>Privacy Policy</NavLink></li>
-//              <li><NavLink to="/profile" className={linkClass}>Profile</NavLink></li>
-//           </ul>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-// import { NavLink, useNavigate } from "react-router-dom";
-// import { useContext, useState } from "react";
-// import { AuthContext } from "../../contexts/AuthContext";
-// import { motion } from "framer-motion";
-
-// const Navbar = () => {
-//   const { user, signOutUser } = useContext(AuthContext);
-//   const [isOpen, setIsOpen] = useState(false);
-//   const navigate = useNavigate();
-
-//   // 🔐 Route Guard Handler
-//   const handleProtectedNav = (path) => {
-//     if (!user) {
-//       navigate("/login");
-//     } else {
-//       navigate(path);
-//     }
-//   };
-
-//   const linkClass = ({ isActive }) =>
-//     isActive
-//       ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1 transition-all"
-//       : "text-white hover:text-yellow-300 transition-all";
-
-//   return (
-//     <div className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#1e293b] shadow-xl">
-//       <div className="navbar px-4 md:px-8 lg:px-16 text-white flex justify-between items-center">
-
-//         {/* LOGO */}
-//         <NavLink to="/">
-//           <motion.div
-//             className="flex items-center gap-2 p-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-//             initial={{ scale: 0.8, opacity: 0 }}
-//             animate={{ scale: 1, opacity: 1 }}
-//             transition={{ duration: 0.6, type: "spring", stiffness: 130 }}
-//           >
-//             <span className="text-yellow-400 text-2xl md:text-3xl animate-bounce">🍽️</span>
-//             <span className="text-white font-extrabold text-lg md:text-2xl tracking-wider">
-//               Yum<span className="text-yellow-400">Yard</span>
-//             </span>
-//           </motion.div>
-//         </NavLink>
-
-//         {/* DESKTOP LINKS */}
-//         <div className="hidden lg:flex gap-5 font-small items-center">
-//           <NavLink to="/" className={linkClass}>Home</NavLink>
-//           <NavLink to="/about" className={linkClass}>About Us</NavLink>
-//           <button onClick={() => handleProtectedNav("/allFood")} className="text-white hover:text-yellow-300 transition">All Food</button>
-//           <NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink>
-//           <button onClick={() => handleProtectedNav("/AddReview")} className="text-white hover:text-yellow-300 transition">Add Review</button>
-//           <button onClick={() => handleProtectedNav("/MyReview")} className="text-white hover:text-yellow-300 transition">My Review</button>
-//           <button onClick={() => handleProtectedNav("/myFavorites")} className="text-white hover:text-yellow-300 transition">My Favorites</button>
-//           <NavLink to="/contact" className={linkClass}>Contact Us</NavLink>
-//           <NavLink to="/privacy" className={linkClass}>Privacy Policy</NavLink>
-//           <NavLink to="/profile" className={linkClass}>Profile</NavLink>
-//           <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
-//         </div>
-
-//         {/* USER / AUTH */}
-//         <div className="flex items-center gap-1">
-//           {user ? (
-//             <div className="relative">
-//               <img
-//                 src={user.photoURL || "/default-avatar.png"}
-//                 onClick={() => setIsOpen(!isOpen)}
-//                 className="w-10 h-10 rounded-full border-2 border-yellow-400 cursor-pointer"
-//               />
-//               {isOpen && (
-//                 <ul className="absolute right-0 mt-3 w-44 bg-[#0f172a] rounded-xl shadow border border-gray-700">
-//                   <li>
-//                     <NavLink to="/dashboard" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">Dashboard</NavLink>
-//                   </li>
-//                   <li>
-//                     <button
-//                       onClick={signOutUser}
-//                       className="w-full text-left px-4 py-2 hover:bg-red-500"
-//                     >
-//                       Logout
-//                     </button>
-//                   </li>
-//                 </ul>
-//               )}
-              
-//             </div>
-//           ) : (
-//             <>
-//               <NavLink to="/register" className="px-1 py-1 border border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-//                 Register
-//               </NavLink>
-//               <NavLink to="/login" className="px-1 py-1 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 transition">
-//                 Login
-//               </NavLink>
-//             </>
-//           )}
-//         </div>
-
-//         {/* MOBILE MENU */}
-//         <div className="lg:hidden relative">
-//           <button
-//             onClick={() => setIsOpen(!isOpen)}
-//             className="text-white text-3xl focus:outline-none"
-//           >
-//             ☰
-//           </button>
-
-//           {isOpen && (
-//             <div className="absolute right-0 top-full mt-2 w-56 bg-[#0f172a] rounded-xl shadow-lg border border-gray-700 z-50">
-//               <ul className="flex flex-col p-4 space-y-2">
-//                 <li><NavLink to="/" className={linkClass} onClick={() => setIsOpen(false)}>Home</NavLink></li>
-//                 <li><NavLink to="/about" className={linkClass} onClick={() => setIsOpen(false)}>About Us</NavLink></li>
-//                 <li onClick={() => { handleProtectedNav("/allFood"); setIsOpen(false); }} className="cursor-pointer text-white hover:text-yellow-300">All Food</li>
-//                 <li><NavLink to="/AllReviews" className={linkClass} onClick={() => setIsOpen(false)}>All Reviews</NavLink></li>
-//                 <li onClick={() => { handleProtectedNav("/AddReview"); setIsOpen(false); }} className="cursor-pointer text-white hover:text-yellow-300">Add Review</li>
-//                 <li onClick={() => { handleProtectedNav("/MyReview"); setIsOpen(false); }} className="cursor-pointer text-white hover:text-yellow-300">My Review</li>
-//                 <li onClick={() => { handleProtectedNav("/myFavorites"); setIsOpen(false); }} className="cursor-pointer text-white hover:text-yellow-300">My Favorites</li>
-//                 <li><NavLink to="/contact" className={linkClass} onClick={() => setIsOpen(false)}>Contact Us</NavLink></li>
-//                 <li><NavLink to="/privacy" className={linkClass} onClick={() => setIsOpen(false)}>Privacy Policy</NavLink></li>
-//                 <li><NavLink to="/profile" className={linkClass} onClick={() => setIsOpen(false)}>Profile</NavLink></li>
-//                  <li><NavLink to="/dashboard" className={linkClass} onClick={() => setIsOpen(false)}>Dashboard</NavLink></li>
-                
-//                 {user && (
-//                   <li>
-//                     <button
-//                       onClick={() => { signOutUser(); setIsOpen(false); }}
-//                       className="w-full text-left px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
-//                     >
-//                       Logout
-//                     </button>
-//                   </li>
-//                 )}
-//               </ul>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-// import { NavLink, useNavigate } from "react-router-dom";
-// import { useContext, useState, useEffect } from "react";
-// import { AuthContext } from "../../contexts/AuthContext";
-// import { motion } from "framer-motion";
-
-// const Navbar = () => {
-//   const { user, signOutUser } = useContext(AuthContext);
-//   const [isOpen, setIsOpen] = useState(false);
-//   const navigate = useNavigate();
-
-//   const [theme, setTheme] = useState(
-//     localStorage.getItem("theme") || "light"
-//   );
-
-//   useEffect(() => {
-//     document.documentElement.setAttribute("data-theme", theme);
-//     localStorage.setItem("theme", theme);
-//   }, [theme]);
-
-//   const toggleTheme = (e) => {
-//     setTheme(e.target.checked ? "dark" : "light");
-//   };
-
-//   /* ========================= */
-
-//   // 🔐 Route Guard Handler
-//   const handleProtectedNav = (path) => {
-//     if (!user) {
-//       navigate("/login");
-//     } else {
-//       navigate(path);
-//     }
-//   };
-
-//   const linkClass = ({ isActive }) =>
-//     isActive
-//       ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1 transition-all"
-//       : "text-white hover:text-yellow-300 transition-all";
-
-//   return (
-//     <div className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#1e293b] shadow-xl">
-//       <div className="navbar px-4 md:px-8 lg:px-16 text-white flex justify-between items-center">
-
-//         {/* LOGO */}
-//         <NavLink to="/">
-//           <motion.div
-//             className="flex items-center gap-2 p-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-//             initial={{ scale: 0.8, opacity: 0 }}
-//             animate={{ scale: 1, opacity: 1 }}
-//             transition={{ duration: 0.6, type: "spring", stiffness: 130 }}
-//           >
-//             <span className="text-yellow-400 text-2xl md:text-3xl animate-bounce">🍽️</span>
-//             <span className="text-white font-extrabold text-lg md:text-2xl tracking-wider">
-//               Yum<span className="text-yellow-400">Yard</span>
-//             </span>
-//           </motion.div>
-//         </NavLink>
-
-//         {/* DESKTOP LINKS */}
-//         <div className="hidden lg:flex gap-5 items-center">
-//           <NavLink to="/" className={linkClass}>Home</NavLink>
-//           <NavLink to="/about" className={linkClass}>About Us</NavLink>
-//           <button onClick={() => handleProtectedNav("/allFood")} className="hover:text-yellow-300">All Food</button>
-//           <NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink>
-//           <button onClick={() => handleProtectedNav("/AddReview")} className="hover:text-yellow-300">Add Review</button>
-//           <button onClick={() => handleProtectedNav("/MyReview")} className="hover:text-yellow-300">My Review</button>
-//           <button onClick={() => handleProtectedNav("/myFavorites")} className="hover:text-yellow-300">My Favorites</button>
-//           <NavLink to="/contact" className={linkClass}>Contact Us</NavLink>
-//           <NavLink to="/privacy" className={linkClass}>Privacy Policy</NavLink>
-         
-//           <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
-//         </div>
-
-//         {/* RIGHT SIDE */}
-//         <div className="flex items-center  gap-3">
-
-//           {/* 🌗 THEME SWITCH */}
-//           <label className="swap swap-rotate text-amber-300">
-//             <input
-//               type="checkbox"
-//               checked={theme === "dark"}
-//               onChange={toggleTheme}
-//             />
-
-//             {/* ☀️ Sun */}
-//             <svg
-//               className="swap-off h-8 w-8 fill-current text-red-500"
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24">
-//               <path d="M5.64,17l-.71.71a1,1,0,0,0,1.41,1.41l.71-.71ZM12,5a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5Z" />
-//             </svg>
-
-//             {/* 🌙 Moon */}
-//             <svg
-//               className="swap-on h-8 w-8 fill-current "
-//               xmlns="http://www.w3.org/2000/svg"
-//               viewBox="0 0 24 24">
-//               <path d="M21.64,13A9,9,0,1,1,11,2.36a1,1,0,0,0-1.32,1.14A7,7,0,1,0,20.5,14.32,1,1,0,0,0,21.64,13Z" />
-//             </svg>
-//           </label>
-
-//           {/* USER */}
-//           {user ? (
-//             <div className="relative">
-//               <img
-//                 src={user.photoURL || "/default-avatar.png"}
-//                 onClick={() => setIsOpen(!isOpen)}
-//                 className="w-10 h-10 rounded-full border-2 border-yellow-400 cursor-pointer"
-//               />
-
-//               {isOpen && (
-//                 <ul className="absolute right-0 mt-3 w-44 bg-[#0f172a] rounded-xl shadow border border-gray-700">
-//                   <li>
-//                     <NavLink to="/dashboard" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">
-//                       Dashboard
-//                     </NavLink>
-//                   </li>
-//                   <li>
-//                     <NavLink to="/profile" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">
-//                       Profile
-//                     </NavLink>
-//                   </li>
-//                   <li>
-//                     <button
-//                       onClick={signOutUser}
-//                       className="w-full text-left px-4 py-2 hover:bg-red-500"
-//                     >
-//                       Logout
-//                     </button>
-//                   </li>
-//                 </ul>
-//               )}
-//             </div>
-//           ) : (
-//             <>
-//               <NavLink to="/register" className="px-3 py-1 border border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-//                 Register
-//               </NavLink>
-//               <NavLink to="/login" className="px-3 py-1 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition">
-//                 Login
-//               </NavLink>
-//             </>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-// import { NavLink, useNavigate } from "react-router-dom";
-// import { useContext, useState, useEffect } from "react";
-// import { AuthContext } from "../../contexts/AuthContext";
-// import { motion } from "framer-motion";
-
-// const demoDefaults = {
-//   "user9@gmail.com": {
-//     displayName: "User",
-//     photoURL: "https://i.ibb.co/nMr0J1cp/ohi.jpg"
-//   },
-//   "admin9@gmail.com": {
-//     displayName: "Admin",
-//     photoURL: "https://i.ibb.co/nMmr1kdJ/87eb01d7c7761237f06cbcdbbdc10d89.jpg"
-//   }
-// };
-
-
-// const Navbar = () => {
-//   const { user, signOutUser } = useContext(AuthContext);
-//   const [isOpen, setIsOpen] = useState(false);
-//   const navigate = useNavigate();
-
-//   const [theme, setTheme] = useState(
-//     localStorage.getItem("theme") || "light"
-//   );
-
-//   useEffect(() => {
-//     document.documentElement.setAttribute("data-theme", theme);
-//     localStorage.setItem("theme", theme);
-//   }, [theme]);
-
-//   const toggleTheme = (e) => {
-//     setTheme(e.target.checked ? "dark" : "light");
-//   };
-
-//   const handleProtectedNav = (path) => {
-//     if (!user) {
-//       navigate("/login");
-//     } else {
-//       navigate(path);
-//     }
-//   };
-
-//   const linkClass = ({ isActive }) =>
-//     isActive
-//       ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1 transition-all"
-//       : "text-white hover:text-yellow-300 transition-all";
-
-//   // Check if the logged-in user is admin
-//   const isAdmin = user && user.email === "admin9@gmail.com";
-
-//   return (
-//     <div className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#1e293b] shadow-xl">
-//       <div className="navbar px-4 md:px-8 lg:px-16 text-white flex justify-between items-center">
-
-//         {/* LOGO */}
-//         <NavLink to="/">
-//           <motion.div
-//             className="flex items-center gap-2 p-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-//             initial={{ scale: 0.8, opacity: 0 }}
-//             animate={{ scale: 1, opacity: 1 }}
-//             transition={{ duration: 0.6, type: "spring", stiffness: 130 }}
-//           >
-//             <span className="text-yellow-400 text-2xl md:text-3xl animate-bounce">🍽️</span>
-//             <span className="text-white font-extrabold text-lg md:text-2xl tracking-wider">
-//               Yum<span className="text-yellow-400">Yard</span>
-//             </span>
-//           </motion.div>
-//         </NavLink>
-
-//         {/* DESKTOP LINKS */}
-//         <div className="hidden lg:flex gap-5 items-center">
-//           <NavLink to="/" className={linkClass}>Home</NavLink>
-
-//           {isAdmin ? (
-//             <>
-//               <button onClick={() => handleProtectedNav("/allFood")} className="hover:text-yellow-300">All Food</button>
-//               <NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink>
-//               <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
-//               <NavLink to="/profile" className={linkClass}>Profile</NavLink>
-//             </>
-//           ) : (
-//             <>
-//               <NavLink to="/about" className={linkClass}>About Us</NavLink>
-//               <button onClick={() => handleProtectedNav("/allFood")} className="hover:text-yellow-300">All Food</button>
-//               <NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink>
-//               <button onClick={() => handleProtectedNav("/AddReview")} className="hover:text-yellow-300">Add Review</button>
-//               <button onClick={() => handleProtectedNav("/MyReview")} className="hover:text-yellow-300">My Review</button>
-//               <button onClick={() => handleProtectedNav("/myFavorites")} className="hover:text-yellow-300">My Favorites</button>
-//               <NavLink to="/contact" className={linkClass}>Contact Us</NavLink>
-//               <NavLink to="/privacy" className={linkClass}>Privacy Policy</NavLink>
-//               <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
-//             </>
-//           )}
-//         </div>
-
-//         {/* RIGHT SIDE */}
-//         <div className="flex items-center  gap-3">
-
-//           {/* 🌗 THEME SWITCH */}
-//           <label className="swap swap-rotate text-amber-300">
-//             <input
-//               type="checkbox"
-//               checked={theme === "dark"}
-//               onChange={toggleTheme}
-//             />
-//             <svg className="swap-off h-8 w-8 fill-current text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-//               <path d="M5.64,17l-.71.71a1,1,0,0,0,1.41,1.41l.71-.71ZM12,5a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5Z" />
-//             </svg>
-//             <svg className="swap-on h-8 w-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-//               <path d="M21.64,13A9,9,0,1,1,11,2.36a1,1,0,0,0-1.32,1.14A7,7,0,1,0,20.5,14.32,1,1,0,0,0,21.64,13Z" />
-//             </svg>
-//           </label>
-
-//           {/* USER */}
-//           {user ? (
-//             <div className="relative">
-//               <img
-//                 src={user.photoURL || "/default-avatar.png"}
-//                 onClick={() => setIsOpen(!isOpen)}
-//                 className="w-10 h-10 rounded-full border-2 border-yellow-400 cursor-pointer"
-//               />
-
-//               {isOpen && (
-//                 <ul className="absolute right-0 mt-3 w-44 bg-[#0f172a] rounded-xl shadow border border-gray-700">
-//                   <li>
-//                     <NavLink to="/dashboard" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">
-//                       Dashboard
-//                     </NavLink>
-//                   </li>
-//                   <li>
-//                     <NavLink to="/profile" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">
-//                       Profile
-//                     </NavLink>
-//                   </li>
-//                   <li>
-//                     <button
-//                       onClick={signOutUser}
-//                       className="w-full text-left px-4 py-2 hover:bg-red-500"
-//                     >
-//                       Logout
-//                     </button>
-//                   </li>
-//                 </ul>
-//               )}
-//             </div>
-//           ) : (
-//             <>
-//               <NavLink to="/register" className="px-3 py-1 border border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-//                 Register
-//               </NavLink>
-//               <NavLink to="/login" className="px-3 py-1 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition">
-//                 Login
-//               </NavLink>
-//             </>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
 import { NavLink, useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -955,17 +7,18 @@ import { motion } from "framer-motion";
 const demoDefaults = {
   "user9@gmail.com": {
     displayName: "User",
-    photoURL: "https://i.ibb.co/nMr0J1cp/ohi.jpg"
+    photoURL: "https://i.ibb.co/nMr0J1cp/ohi.jpg",
   },
   "admin9@gmail.com": {
     displayName: "Admin",
-    photoURL: "https://i.ibb.co/nMmr1kdJ/87eb01d7c7761237f06cbcdbbdc10d89.jpg"
-  }
+    photoURL: "https://i.ibb.co/nMmr1kdJ/87eb01d7c7761237f06cbcdbbdc10d89.jpg",
+  },
 };
 
 const Navbar = () => {
   const { user, signOutUser } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -980,22 +33,22 @@ const Navbar = () => {
   };
 
   const handleProtectedNav = (path) => {
-    if (!user) {
-      navigate("/login");
-    } else {
-      navigate(path);
-    }
+    setMenuOpen(false);
+    if (!user) navigate("/login");
+    else navigate(path);
   };
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1 transition-all"
-      : "text-white hover:text-yellow-300 transition-all";
+      ? "text-yellow-400 font-semibold border-b-2 border-yellow-400 pb-1"
+      : "text-white hover:text-yellow-300";
 
   const isAdmin = user && user.email === "admin9@gmail.com";
 
-  // Determine user photo for demo and normal users
-  const userPhoto = user?.photoURL || demoDefaults[user?.email]?.photoURL || "/default-avatar.png";
+  const userPhoto =
+    user?.photoURL ||
+    demoDefaults[user?.email]?.photoURL ||
+    "/default-avatar.png";
 
   return (
     <div className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#020617] via-[#0f172a] to-[#1e293b] shadow-xl">
@@ -1004,57 +57,73 @@ const Navbar = () => {
         {/* LOGO */}
         <NavLink to="/">
           <motion.div
-            className="flex items-center gap-2 p-2 sm:p-3 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
+            className="flex items-center gap-2 p-2 sm:p-3 rounded-xl shadow-lg hover:scale-105"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", stiffness: 130 }}
           >
-            <span className="text-yellow-400 text-xl sm:text-2xl md:text-3xl animate-bounce">🍽️</span>
-            <span className="text-white font-extrabold text-sm sm:text-lg md:text-2xl tracking-wider">
+            <span className="text-yellow-400 text-xl sm:text-2xl md:text-3xl">🍽️</span>
+            <span className="font-extrabold text-sm sm:text-lg md:text-2xl">
               Yum<span className="text-yellow-400">Yard</span>
             </span>
           </motion.div>
         </NavLink>
 
         {/* DESKTOP LINKS */}
-        <div className="hidden lg:flex gap-3 md:gap-5 items-center text-sm md:text-base">
+        <div className="hidden lg:flex gap-4 items-center text-sm md:text-base ">
           <NavLink to="/" className={linkClass}>Home</NavLink>
 
           {isAdmin ? (
             <>
-              <button onClick={() => handleProtectedNav("/allFood")} className="hover:text-yellow-300">All Food</button>
-              <NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink>
               <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
               <NavLink to="/profile" className={linkClass}>Profile</NavLink>
             </>
           ) : (
             <>
               <NavLink to="/about" className={linkClass}>About Us</NavLink>
-              <button onClick={() => handleProtectedNav("/allFood")} className="hover:text-yellow-300">All Food</button>
+              <button onClick={() => handleProtectedNav("/allFood")}>All Food</button>
               <NavLink to="/AllReviews" className={linkClass}>All Reviews</NavLink>
-              <button onClick={() => handleProtectedNav("/AddReview")} className="hover:text-yellow-300">Add Review</button>
-              <button onClick={() => handleProtectedNav("/MyReview")} className="hover:text-yellow-300">My Review</button>
-              <button onClick={() => handleProtectedNav("/myFavorites")} className="hover:text-yellow-300">My Favorites</button>
-              <NavLink to="/contact" className={linkClass}>Contact Us</NavLink>
-              <NavLink to="/privacy" className={linkClass}>Privacy Policy</NavLink>
+              
+              <NavLink to="/contact" className={linkClass}>Contact</NavLink>
+              <NavLink to="/privacy" className={linkClass}>Privacy</NavLink>
               <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
             </>
           )}
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2">
 
-          {/* THEME SWITCH */}
-          <label className="swap swap-rotate text-amber-300">
-            <input type="checkbox" checked={theme === "dark"} onChange={toggleTheme} />
-            <svg className="swap-off h-6 sm:h-8 w-6 sm:w-8 fill-current text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M5.64,17l-.71.71a1,1,0,0,0,1.41,1.41l.71-.71ZM12,5a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5Z" />
-            </svg>
-            <svg className="swap-on h-6 sm:h-8 w-6 sm:w-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M21.64,13A9,9,0,1,1,11,2.36a1,1,0,0,0-1.32,1.14A7,7,0,1,0,20.5,14.32,1,1,0,0,0,21.64,13Z" />
-            </svg>
-          </label>
+          {/* CREATIVE YELLOW THEME SWITCH */}
+<label className="swap swap-rotate cursor-pointer">
+  {/* Hidden checkbox controlling the theme */}
+  <input
+    type="checkbox"
+    checked={theme === "dark"}
+    onChange={toggleTheme}
+    className="hidden"
+  />
+
+  {/* SUN ICON - Light Mode */}
+  <svg
+    className="swap-off h-10 w-10 text-yellow-400 transition-transform duration-500 hover:rotate-12 hover:scale-110"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/>
+  </svg>
+
+  {/* MOON ICON - Dark Mode */}
+  <svg
+    className="swap-on h-10 w-10 text-yellow-400 transition-transform duration-500 hover:-rotate-12 hover:scale-110"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/>
+  </svg>
+</label>
 
           {/* USER PROFILE */}
           {user ? (
@@ -1066,40 +135,57 @@ const Navbar = () => {
               />
 
               {isOpen && (
-                <ul className="absolute right-0 mt-2 sm:mt-3 w-40 sm:w-44 bg-[#0f172a] rounded-xl shadow border border-gray-700 text-sm sm:text-base">
-                  <li>
-                    <NavLink to="/dashboard" className="block px-3 sm:px-4 py-2 hover:bg-yellow-400 hover:text-black">
-                      Dashboard
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/profile" className="block px-3 sm:px-4 py-2 hover:bg-yellow-400 hover:text-black">
-                      Profile
-                    </NavLink>
-                  </li>
-                  <li>
-                    <button
-                      onClick={signOutUser}
-                      className="w-full text-left px-3 sm:px-4 py-2 hover:bg-red-500"
-                    >
-                      Logout
-                    </button>
-                  </li>
+                <ul className="absolute right-0 mt-3 w-44 bg-[#0f172a] rounded-xl shadow border border-gray-700 text-sm">
+                  <li><NavLink to="/dashboard" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">Dashboard</NavLink></li>
+                  <li><NavLink to="/profile" className="block px-4 py-2 hover:bg-yellow-400 hover:text-black">Profile</NavLink></li>
+                  <li><button onClick={signOutUser} className="w-full text-left px-4 py-2 hover:bg-red-500">Logout</button></li>
                 </ul>
               )}
             </div>
           ) : (
             <>
-              <NavLink to="/register" className="px-2 sm:px-3 py-1 border border-yellow-400 text-yellow-400 rounded-lg hover:bg-yellow-400 hover:text-black transition text-xs sm:text-sm">
-                Register
-              </NavLink>
-              <NavLink to="/login" className="px-2 sm:px-3 py-1 bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition text-xs sm:text-sm">
-                Login
-              </NavLink>
+              <NavLink to="/register" className="px-2 py-1 border border-yellow-400 text-yellow-400 rounded-lg text-xs">Register</NavLink>
+              <NavLink to="/login" className="px-2 py-1 bg-yellow-400 text-black rounded-lg text-xs">Login</NavLink>
+            </>
+          )}
+
+          {/* MOBILE MENU BUTTON */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="lg:hidden text-2xl ml-2"
+          >
+            ☰
+          </button>
+        </div>
+      </div>
+
+      {/* MOBILE DROPDOWN MENU */}
+      {menuOpen && (
+        <div className="lg:hidden bg-[#020617] text-white px-6 py-4 flex flex-col  gap-5">
+          <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
+
+          {isAdmin ? (
+            <>
+              <button onClick={() => handleProtectedNav("/allFood")}>All Food</button>
+              <NavLink to="/AllReviews" onClick={() => setMenuOpen(false)}>All Reviews</NavLink>
+              <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</NavLink>
+              <NavLink to="/profile" onClick={() => setMenuOpen(false)}>Profile</NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
+              <button onClick={() => handleProtectedNav("/allFood")}>All Food</button>
+              <NavLink to="/AllReviews" onClick={() => setMenuOpen(false)}>All Reviews</NavLink>
+              <button onClick={() => handleProtectedNav("/AddReview")}>Add Review</button>
+              <button onClick={() => handleProtectedNav("/MyReview")}>My Review</button>
+              <button onClick={() => handleProtectedNav("/myFavorites")}>My Favorites</button>
+              <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
+              <NavLink to="/privacy" onClick={() => setMenuOpen(false)}>Privacy</NavLink>
+              <NavLink to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</NavLink>
             </>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 };

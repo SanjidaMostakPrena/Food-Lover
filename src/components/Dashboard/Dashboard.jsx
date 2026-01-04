@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -33,6 +34,7 @@ ChartJS.register(
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const isAdmin = user?.email === "admin9@gmail.com";
+  const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -64,7 +66,7 @@ const Dashboard = () => {
     );
   }
 
-  /* ---------- USER DATA ---------- */
+  
   const topFoods = [...products]
     .sort((a, b) => (b.rating || 0) - (a.rating || 0))
     .slice(0, 5);
@@ -75,7 +77,7 @@ const Dashboard = () => {
       {
         label: "Rating",
         data: topFoods.map((p) => p.rating || 0),
-        backgroundColor: "rgba(234, 179, 8, 0.8)", // yellow-500
+        backgroundColor: "rgba(234, 179, 8, 0.8)",
         borderRadius: 10,
       },
     ],
@@ -123,6 +125,16 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-base-200 text-base-content p-6">
+      {/* Back Button */}
+      <div className="mb-4">
+        <button
+          onClick={() => navigate("/")}
+          className="btn btn-sm bg-yellow-500 text-black hover:bg-yellow-600"
+        >
+          ← Back to Home
+        </button>
+      </div>
+
       {/* Header */}
       <header className="bg-base-100 p-6 rounded-3xl shadow mb-8">
         <h1 className="text-3xl font-bold text-base-content">
@@ -169,9 +181,7 @@ const Dashboard = () => {
 
       {/* Stats Cards */}
       <section
-        className={`grid ${
-          isAdmin ? "md:grid-cols-2" : "md:grid-cols-4"
-        } gap-6 mb-10`}
+        className={`grid ${isAdmin ? "md:grid-cols-2" : "md:grid-cols-4"} gap-6 mb-10`}
       >
         <div className="bg-base-100 rounded-2xl p-6 text-center shadow">
           <h2 className="text-4xl font-bold text-yellow-500">

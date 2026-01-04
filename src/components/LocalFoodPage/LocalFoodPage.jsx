@@ -38,7 +38,7 @@ const LocalFoodPage = () => {
         </div>
       </section>
 
-      {/* ================= Our Services ================= */}
+   
       <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-12">Our Services</h2>
@@ -58,7 +58,7 @@ const LocalFoodPage = () => {
         </div>
       </section>
 
-      {/* ================= How It Works ================= */}
+
       <section className="py-20 px-6 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-12">How Our Service Works</h2>
@@ -78,7 +78,7 @@ const LocalFoodPage = () => {
         </div>
       </section>
 
-      {/* ================= FAQ Section ================= */}
+      
       <section className="py-20 px-6 bg-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
@@ -104,7 +104,7 @@ const LocalFoodPage = () => {
         </div>
       </section>
 
-      {/* ================= Newsletter ================= */}
+ 
       <section className="py-20 px-6 bg-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">Stay Updated With Our Newsletter</h2>
