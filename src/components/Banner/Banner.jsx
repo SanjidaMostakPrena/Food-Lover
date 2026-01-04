@@ -1,4 +1,3 @@
-
 import React from "react";
 import Slider from "react-slick";
 import { motion } from "framer-motion";
@@ -17,39 +16,39 @@ const Banner = () => {
     arrows: true,
     pauseOnHover: true,
     adaptiveHeight: false,
-    appendDots: dots => (
+    appendDots: (dots) => (
       <div>
-        <ul className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2">
+        <ul className="absolute bottom-4 sm:bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 flex gap-2">
           {dots}
         </ul>
       </div>
     ),
-    customPaging: i => (
-      <div className="w-3 h-3 rounded-full bg-yellow-400/70 hover:bg-yellow-400 transition"></div>
+    customPaging: (i) => (
+      <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-400/70 hover:bg-yellow-400 transition"></div>
     ),
   };
 
   const slides = [
     {
       image: "https://i.ibb.co/prQ3xHJS/cook.jpg",
-      heading: "Discover Local Delights",
+      heading: "Local Delights",
       subHeading: "Taste the best street food near you!",
       cta: "Explore Now",
     },
     {
       image: "https://i.ibb.co/B5BzrpPx/mmm.jpg",
-      heading: "Food Lovers Unite",
+      heading: "Food Lovers",
       subHeading: "Share your favorite dishes and recipes!",
       cta: "Join Community",
     },
     {
-      image: "https://i.ibb.co.com/gbWsh4Q3/v.jpg",
-      heading: "Explore Local Recipes",
+      image: "https://i.ibb.co/gbWsh4Q3/v.jpg",
+      heading: "Explore Recipes",
       subHeading: "Try authentic flavors from your city!",
       cta: "Browse Recipes",
     },
     {
-      image: "https://i.ibb.co.com/Pz1W7bhj/l.webp",
+      image: "https://i.ibb.co/Pz1W7bhj/l.webp",
       heading: "Hidden Gems Await",
       subHeading: "Discover restaurants off the beaten path!",
       cta: "Find Hidden Gems",
@@ -57,7 +56,7 @@ const Banner = () => {
   ];
 
   return (
-    <div className="relative  w-full h-[70vh] lg:h-[75vh] xl:h-[80vh] overflow-hidden">
+    <div className="relative w-full min-h-[55vh] sm:min-h-[65vh] lg:min-h-[75vh] xl:min-h-[80vh] overflow-hidden">
       <Slider {...settings}>
         {slides.map((slide, index) => (
           <div key={index} className="relative h-full w-full">
@@ -73,18 +72,18 @@ const Banner = () => {
 
             {/* Text Content */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: index * 0.3 }}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center px-4 md:px-6"
+              transition={{ duration: 1, delay: index * 0.3 }}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center px-3 sm:px-6 max-w-[90%] sm:max-w-[70%] lg:max-w-[50%]"
             >
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-yellow-400 drop-shadow-lg mb-2 animate-fadeIn">
+              <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-yellow-400 drop-shadow-lg mb-2 animate-fadeIn">
                 {slide.heading}
               </h2>
-              <p className="text-sm sm:text-lg md:text-2xl text-white drop-shadow-md mb-4">
+              <p className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white drop-shadow-md mb-4">
                 {slide.subHeading}
               </p>
-              <button className="bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full shadow-xl hover:bg-yellow-500 hover:scale-105 transition duration-300">
+              <button className="bg-yellow-400 text-black font-semibold px-3 xs:px-4 sm:px-6 py-2 xs:py-2.5 sm:py-3 rounded-full shadow-xl hover:bg-yellow-500 hover:scale-105 transition duration-300 text-xs xs:text-sm sm:text-base">
                 {slide.cta}
               </button>
             </motion.div>
@@ -93,10 +92,10 @@ const Banner = () => {
       </Slider>
 
       {/* Scroll Down Indicator */}
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 animate-bounce text-white">
+      <div className="absolute bottom-3 sm:bottom-5 left-1/2 transform -translate-x-1/2 animate-bounce text-white">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
+          className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
